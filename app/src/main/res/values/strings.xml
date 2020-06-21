@@ -1,0 +1,31 @@
+<resources>
+    <string name="app_name">DiscoverKiller</string>
+    <string name="xposed_desc">Change the discover feed to whatever you want</string>
+    <string name="category_behaviour">Replace Discover with…</string>
+    <string name="behaviour_replace_google_updates">Google Assistant Updates Screen</string>
+    <string name="behaviour_replace_google_updates_desc">This is the screen you get when you select \'Updates\' from the Discover screen, or swipe up from the Assistant window. It contains useful info like the weather, calendar events, reminders and lists.</string>
+    <string name="behaviour_replace_custom_app">Custom App</string>
+    <string name="behaviour_replace_custom_app_desc">Replace Discover with whatever app you want.\n<b>Note: This will not be as seamless a transition as the Google Updates or original Discover screen, and may be buggy</b></string>
+    <string name="behaviour_replace_none">Google Discover</string>
+    <string name="behaviour_replace_none_desc">Do nothing - effectively disable the module without having to uninstall it and reboot.</string>
+    <string name="button_select_app">Select app</string>
+    <string name="search">Search</string>
+    <string name="nothing_found">Nothing found</string>
+    <string name="show_system_apps">Show system apps</string>
+    <string name="no_app_selected">No app is selected to launch in DiscoverKiller</string>
+    <string name="category_options">Options</string>
+    <string name="option_enable_swipe">Enable Swipe to Dismiss</string>
+    <string name="option_enable_swipe_desc">Swipe right to dismiss the shown view.\n\n<b>Note: For compatibility reasons, this only works when the Google Assistant Updates option is selected. Swiping left is only partially supported.</b></string>
+    <string name="module_status">Module Status</string>
+    <string name="module_status_desc_enabled">Module enabled</string>
+    <string name="module_status_desc_disabled">Module is not enabled, or the hooks are not working (if the module is working, you can ignore this)</string>
+    <string name="module_status_desc_no_xposed">EdXposed is not installed</string>
+    <string name="category_about">About</string>
+    <string name="about">%1s v%2s</string>
+    <string name="about_summary">Created by Kieron Quinn / Quinny899 @ XDA</string>
+    <string name="xda_thread">XDA Thread</string>
+    <string name="github">GitHub</string>
+    <string name="libraries">Third party libraries</string>
+    <string name="donate">Donate</string>
+    <string name="twitter">Follow me on Twitter</string>
+</resources>

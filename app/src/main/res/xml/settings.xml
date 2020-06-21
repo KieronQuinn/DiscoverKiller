@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+    <com.kieronquinn.app.discoverkiller.settings.preferences.Preference
+        android:title="@string/module_status"
+        android:key="module_status"/>
+
+    <com.kieronquinn.app.discoverkiller.settings.preferences.PreferenceCategory
+        android:title="@string/category_behaviour">
+
+        <com.kieronquinn.app.discoverkiller.settings.preferences.RadioButtonPreference
+            android:title="@string/behaviour_replace_google_updates"
+            android:summary="@string/behaviour_replace_google_updates_desc"
+            android:icon="@drawable/ic_behaviour_updates"
+            android:key="behaviour_google_updates"/>
+
+        <com.kieronquinn.app.discoverkiller.settings.preferences.RadioButtonPreference
+            android:title="@string/behaviour_replace_custom_app"
+            android:summary="@string/behaviour_replace_custom_app_desc"
+            android:icon="@drawable/ic_behaviour_apps"
+            android:key="behaviour_custom_app"/>
+
+        <com.kieronquinn.app.discoverkiller.settings.preferences.RadioButtonPreference
+            android:title="@string/behaviour_replace_none"
+            android:summary="@string/behaviour_replace_none_desc"
+            android:icon="@drawable/ic_behaviour_discover"
+            android:key="behaviour_none"/>
+
+    </com.kieronquinn.app.discoverkiller.settings.preferences.PreferenceCategory>
+
+    <com.kieronquinn.app.discoverkiller.settings.preferences.PreferenceCategory
+        android:title="@string/category_options">
+
+        <com.kieronquinn.app.discoverkiller.settings.preferences.SwitchPreference
+            android:title="@string/option_enable_swipe"
+            android:summary="@string/option_enable_swipe_desc"
+            android:icon="@drawable/ic_swipe_close"
+            android:key="option_enable_swipe"/>
+
+    </com.kieronquinn.app.discoverkiller.settings.preferences.PreferenceCategory>
+
+    <com.kieronquinn.app.discoverkiller.settings.preferences.PreferenceCategory
+        android:title="@string/category_about">
+
+        <com.kieronquinn.app.discoverkiller.settings.preferences.Preference
+            android:title="@string/about"
+            android:summary="@string/about_summary"
+            android:icon="@drawable/ic_info"
+            android:key="about_about"/>
+
+        <com.kieronquinn.app.discoverkiller.settings.preferences.Preference
+            android:title="@string/xda_thread"
+            android:icon="@drawable/ic_xda"
+            android:key="about_xda"/>
+
+        <com.kieronquinn.app.discoverkiller.settings.preferences.Preference
+            android:title="@string/github"
+            android:icon="@drawable/ic_github"
+            android:key="about_github"/>
+
+        <com.kieronquinn.app.discoverkiller.settings.preferences.Preference
+            android:title="@string/donate"
+            android:icon="@drawable/ic_donate"
+            android:key="about_donate"/>
+
+        <com.kieronquinn.app.discoverkiller.settings.preferences.Preference
+            android:title="@string/libraries"
+            android:icon="@drawable/ic_libraries"
+            android:key="about_libraries"/>
+
+    </com.kieronquinn.app.discoverkiller.settings.preferences.PreferenceCategory>
+</PreferenceScreen>

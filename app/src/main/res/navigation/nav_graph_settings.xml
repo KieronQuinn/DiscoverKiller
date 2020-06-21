@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_graph_settings"
+    app:startDestination="@id/settingsFragment">
+
+    <fragment
+        android:id="@+id/settingsFragment"
+        android:name="com.kieronquinn.app.discoverkiller.settings.fragments.SettingsFragment"
+        android:label="@string/app_name" >
+        <action
+            android:id="@+id/action_settingsFragment_to_appsFragment"
+            app:destination="@id/appsFragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right" />
+    </fragment>
+    <fragment
+        android:id="@+id/appsFragment"
+        tools:layout="@layout/fragment_apps"
+        android:name="com.kieronquinn.app.discoverkiller.settings.fragments.AppsFragment"
+        android:label="@string/button_select_app" />
+</navigation>

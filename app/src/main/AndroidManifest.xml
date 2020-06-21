@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.kieronquinn.app.discoverkiller">
+
+    <application
+        android:allowBackup="true"
+        android:icon="@mipmap/ic_launcher"
+        android:label="@string/app_name"
+        android:roundIcon="@mipmap/ic_launcher_round"
+        android:supportsRtl="true"
+        android:name=".DiscoverKiller"
+        android:theme="@style/AppTheme">
+        <activity android:name=".settings.SettingsActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+
+        <meta-data
+            android:name="xposedmodule"
+            android:value="true"/>
+        <meta-data
+            android:name="xposeddescription"
+            android:value="@string/xposed_desc"/>
+        <meta-data
+            android:name="xposedminversion"
+            android:value="90"/>
+
+        <provider
+            android:name=".settings.SharedPrefsProvider"
+            android:authorities="com.kieronquinn.app.discoverkiller.provider.sharedprefs"
+            android:grantUriPermissions="true"
+            android:exported="true" />
+
+        <activity
+            android:name="com.google.android.gms.oss.licenses.OssLicensesMenuActivity"
+            android:theme="@style/AppTheme.ThirdPartyLicences" />
+
+        <activity
+            android:name="com.google.android.gms.oss.licenses.OssLicensesActivity"
+            android:theme="@style/AppTheme.ThirdPartyLicences" />
+
+
+    </application>
+
+</manifest>
