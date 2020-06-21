@@ -11,7 +11,7 @@ DiscoverKiller is an Xposed module that allows you to replace the Google Discove
 (Replacing the page with Assistant 'Updates', and replacing it to launch the BBC News app)
 
 ## Configuration:
-![Configuration page](https://i.imgur.com/MRbYd5P.png "Configuration page")
+![Configuration page](https://i.imgur.com/MRbYd5Pl.png "Configuration page")
 
 DiscoverKiller has three options for the left pane behaviour: Open the Assistant 'Updates' screen, choose a custom app to launch (any of your apps will work) or use the standard behaviour (if you want to temporarily go back without having to reboot). If you're using the 'Updates' screen behaviour, there's also an option to close the app by swiping right (swiping left, although integrated, doesn't work properly due to the gestures already on that screen).
 
