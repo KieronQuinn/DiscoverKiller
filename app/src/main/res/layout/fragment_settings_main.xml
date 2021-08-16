@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <com.google.android.material.appbar.AppBarLayout
+        android:id="@+id/app_bar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/colorPrimary"
+        app:elevation="0dp">
+
+        <com.google.android.material.appbar.CollapsingToolbarLayout
+            android:id="@+id/collapsing_toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/app_bar_height"
+            app:contentScrim="@android:color/transparent"
+            app:expandedTitleMarginEnd="@dimen/toolbar_expanded_title_margin"
+            app:expandedTitleMarginStart="@dimen/toolbar_expanded_title_margin"
+            app:layout_scrollFlags="scroll|exitUntilCollapsed|snap"
+            app:maxLines="2"
+            app:scrimAnimationDuration="250"
+            app:scrimVisibleHeightTrigger="@dimen/toolbar_scrim_visible_height"
+            app:statusBarScrim="@android:color/transparent"
+            app:title="@string/app_name"
+            app:titleCollapseMode="fade">
+
+            <com.google.android.material.appbar.MaterialToolbar
+                android:id="@+id/toolbar"
+                android:layout_width="match_parent"
+                android:layout_height="?android:actionBarSize"
+                app:layout_collapseMode="pin"
+                app:title="@string/app_name" />
+
+        </com.google.android.material.appbar.CollapsingToolbarLayout>
+
+    </com.google.android.material.appbar.AppBarLayout>
+
+    <androidx.fragment.app.FragmentContainerView
+        android:id="@+id/nav_host_fragment"
+        android:name="androidx.navigation.fragment.NavHostFragment"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:layout_behavior="com.google.android.material.appbar.AppBarLayout$ScrollingViewBehavior"
+        app:navGraph="@navigation/nav_graph_settings" />
+
+    <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
+        android:id="@+id/fab_preview"
+        android:layout_width="wrap_content"
+        android:layout_height="@dimen/fab_height"
+        android:layout_gravity="bottom|center"
+        android:layout_marginBottom="@dimen/padding_16"
+        android:fontFamily="@font/google_sans_text_medium"
+        android:gravity="center"
+        android:text="@string/fab_preview"
+        android:textAllCaps="false"
+        android:textColor="@android:color/white"
+        app:icon="@drawable/ic_preview"
+        app:iconTint="@android:color/white" />
+
+    <FrameLayout
+        android:id="@+id/snackbar_container"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom"
+        android:visibility="gone"
+        tools:visibility="visible"
+        android:clipToPadding="false">
+
+        <FrameLayout
+            android:id="@+id/snackbar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom"
+            android:layout_margin="@dimen/padding_16"
+            android:animateLayoutChanges="true"
+            android:background="@drawable/snackbar_background"
+            android:elevation="8dp"
+            android:outlineProvider="background">
+
+            <include
+                android:id="@+id/snackbar_root"
+                layout="@layout/include_snackbar" />
+
+        </FrameLayout>
+
+    </FrameLayout>
+
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

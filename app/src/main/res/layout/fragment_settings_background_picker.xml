@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:animateLayoutChanges="true"
+    tools:background="@color/colorAccent">
+
+    <com.google.android.material.appbar.MaterialToolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:elevation="8dp"
+        android:outlineProvider="none"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <androidx.viewpager2.widget.ViewPager2
+        android:id="@+id/settings_background_picker_viewpager"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+
+    <LinearLayout
+        android:id="@+id/settings_background_picker_sheet"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/bottom_sheet_rounded_bg"
+        android:gravity="center"
+        android:clipToPadding="false"
+        android:clickable="true"
+        android:focusable="false"
+        android:animateLayoutChanges="true"
+        android:orientation="vertical"
+        android:padding="@dimen/padding_16"
+        app:layout_constraintBottom_toBottomOf="parent">
+
+        <TextView
+            android:id="@+id/settings_background_picker_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:paddingTop="@dimen/padding_8"
+            android:textAppearance="@style/TextAppearance.AppCompat.Large.DiscoverKiller"
+            tools:text="Background" />
+
+        <TextView
+            android:id="@+id/settings_background_picker_info"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/padding_16"
+            android:gravity="center"
+            android:textAppearance="@style/TextAppearance.AppCompat.Small.DiscoverKiller"
+            tools:text="Background Info\nMultiple Lines" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/settings_background_picker_apply"
+            style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/padding_16"
+            android:fontFamily="@font/google_sans_text_medium"
+            android:text="@string/settings_background_picker_apply"
+            android:textAllCaps="false" />
+
+    </LinearLayout>
+
+    <androidx.constraintlayout.widget.Group
+        android:id="@+id/settings_background_picker_hideable"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:constraint_referenced_ids="toolbar,settings_background_picker_sheet" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

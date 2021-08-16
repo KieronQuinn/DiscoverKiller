@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@drawable/item_about_background"
+    android:padding="@dimen/padding_16"
+    android:layout_marginStart="@dimen/padding_16"
+    android:layout_marginTop="24dp"
+    android:layout_marginEnd="@dimen/padding_16"
+    android:layout_marginBottom="@dimen/padding_16">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/app_name"
+        android:id="@+id/item_configuration_about_title"
+        app:layout_constraintTop_toTopOf="parent"
+        android:textAppearance="@style/TextAppearance.AppCompat.Large.DiscoverKiller"
+        android:gravity="center"/>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/item_configuration_about_subtitle"
+        android:id="@+id/item_configuration_about_subtitle"
+        android:paddingTop="@dimen/padding_16"
+        android:paddingBottom="@dimen/padding_8"
+        app:layout_constraintTop_toBottomOf="@id/item_configuration_about_title"
+        android:textAppearance="@style/TextAppearance.AppCompat.Small.DiscoverKiller"
+        android:gravity="center"/>
+
+    <com.google.android.material.chip.Chip
+        android:id="@+id/about_chip_github"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/padding_16"
+        android:layout_marginEnd="@dimen/padding_8"
+        android:text="@string/github"
+        android:textAppearance="@style/TextAppearance.AppCompat.Small.DiscoverKiller.Bold"
+        app:chipBackgroundColor="@color/colorAccent"
+        app:chipEndPadding="@dimen/padding_8"
+        app:chipIcon="@drawable/ic_github"
+        app:chipStartPadding="@dimen/padding_8"
+        android:textColor="?android:textColorPrimaryInverse"
+        app:chipIconTint="?android:textColorPrimaryInverse"
+        app:layout_constraintHorizontal_chainStyle="packed"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/about_chip_donate"
+        app:layout_constraintTop_toBottomOf="@id/item_configuration_about_subtitle" />
+
+    <com.google.android.material.chip.Chip
+        android:id="@+id/about_chip_donate"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/padding_8"
+        android:layout_marginEnd="@dimen/padding_8"
+        android:text="@string/donate"
+        android:textAppearance="@style/TextAppearance.AppCompat.Small.DiscoverKiller.Bold"
+        app:chipBackgroundColor="@color/colorAccent"
+        app:chipEndPadding="@dimen/padding_8"
+        app:chipIcon="@drawable/ic_donate"
+        app:chipStartPadding="@dimen/padding_8"
+        android:textColor="?android:textColorPrimaryInverse"
+        app:chipIconTint="?android:textColorPrimaryInverse"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/about_chip_github"
+        app:layout_constraintTop_toBottomOf="@id/item_configuration_about_subtitle" />
+
+    <com.google.android.material.chip.Chip
+        android:id="@+id/about_chip_xda"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/padding_16"
+        android:layout_marginEnd="@dimen/padding_8"
+        android:text="@string/xda_thread"
+        android:textAppearance="@style/TextAppearance.AppCompat.Small.DiscoverKiller.Bold"
+        app:chipBackgroundColor="@color/colorAccent"
+        app:chipEndPadding="@dimen/padding_8"
+        app:chipIcon="@drawable/ic_xda"
+        app:chipStartPadding="@dimen/padding_8"
+        android:textColor="?android:textColorPrimaryInverse"
+        app:chipIconTint="?android:textColorPrimaryInverse"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintHorizontal_chainStyle="packed"
+        app:layout_constraintEnd_toStartOf="@id/about_chip_twitter"
+        app:layout_constraintTop_toBottomOf="@id/about_chip_github"/>
+
+    <com.google.android.material.chip.Chip
+        android:id="@+id/about_chip_twitter"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/padding_8"
+        android:layout_marginEnd="@dimen/padding_8"
+        android:text="@string/twitter"
+        android:textAppearance="@style/TextAppearance.AppCompat.Small.DiscoverKiller.Bold"
+        app:chipBackgroundColor="@color/colorAccent"
+        app:chipEndPadding="@dimen/padding_8"
+        app:chipIcon="@drawable/ic_twitter"
+        app:chipStartPadding="@dimen/padding_8"
+        android:textColor="?android:textColorPrimaryInverse"
+        app:chipIconTint="?android:textColorPrimaryInverse"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/about_chip_xda"
+        app:layout_constraintTop_toBottomOf="@id/about_chip_github"/>
+
+</androidx.constraintlayout.widget.ConstraintLayout>
