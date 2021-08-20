@@ -56,7 +56,6 @@ abstract class BaseOverlay<T: ViewBinding>(context: Context, private val viewBin
         container?.fitsSystemWindows = false
         _binding = viewBindingInflate.invoke(remoteLayoutInflater, container, true) as T
         window?.let {
-            Log.d("BaseOverlay", "Setting window flags")
             it.clearFlags(WindowManager.LayoutParams.FLAG_DIM_BEHIND)
             it.addFlags(Window.FEATURE_NO_TITLE)
             it.addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS)

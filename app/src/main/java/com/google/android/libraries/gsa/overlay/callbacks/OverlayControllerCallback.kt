@@ -132,7 +132,7 @@ abstract class OverlayControllerCallback(
                     )
                     true
                 } catch (e: Throwable) {
-                    Log.d("OverlaySController", "Error creating overlay window", e)
+                    Log.e("OverlaySController", "Error creating overlay window", e)
                     val obtain = Message.obtain()
                     obtain.what = 2
                     handleMessage(obtain)

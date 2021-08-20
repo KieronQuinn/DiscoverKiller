@@ -355,7 +355,6 @@ public class SlidingPanelLayout extends FrameLayout {
 
     public final void cnG() {
         cnO();
-        Log.d("DOC", "cnG");
         this.mIsPanelOpen = true;
         this.mIsPageMoving = false;
         if (this.dragCallback != null) {

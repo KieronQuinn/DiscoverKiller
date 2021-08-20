@@ -147,14 +147,17 @@ class SettingsMainFragment: BoundFragment<FragmentSettingsMainBinding>(FragmentS
     }
 
     private fun handleLoadState(state: SettingsViewModel.OverlayLoadState) {
-        Log.d("SVM", "handleLoadState $state")
-        if(state == SettingsViewModel.OverlayLoadState.WAITING_FOR_RESTART){
+        if(state == SettingsViewModel.OverlayLoadState.RESTART || state == SettingsViewModel.OverlayLoadState.WAITING_FOR_RESTART || state == SettingsViewModel.OverlayLoadState.TIMEOUT){
             setSnackbarVisibility(true)
-            binding.snackbarRoot.snackbarText.text = getString(R.string.snackbar_reloading_overlay)
-            binding.snackbarRoot.snackbarProgress.isVisible = true
-            reconnectAfterDelay()
         }else{
             setSnackbarVisibility(false)
+        }
+        if(state == SettingsViewModel.OverlayLoadState.RESTART || state == SettingsViewModel.OverlayLoadState.WAITING_FOR_RESTART) {
+            binding.snackbarRoot.snackbarText.text = getString(R.string.snackbar_reloading_overlay)
+            binding.snackbarRoot.snackbarProgress.isVisible = true
+        }
+        if(state == SettingsViewModel.OverlayLoadState.WAITING_FOR_RESTART){
+            reconnectAfterDelay()
         }
         if(state == SettingsViewModel.OverlayLoadState.RUNNING){
             setFabVisibility(true)
@@ -162,7 +165,6 @@ class SettingsMainFragment: BoundFragment<FragmentSettingsMainBinding>(FragmentS
             setFabVisibility(false)
         }
         if(state == SettingsViewModel.OverlayLoadState.TIMEOUT){
-            setSnackbarVisibility(true)
             binding.snackbarRoot.snackbarText.text = getString(R.string.snackbar_overlay_timeout)
             binding.snackbarRoot.snackbarProgress.isVisible = false
         }

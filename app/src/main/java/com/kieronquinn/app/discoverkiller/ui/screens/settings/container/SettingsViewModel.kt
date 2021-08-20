@@ -1,6 +1,5 @@
 package com.kieronquinn.app.discoverkiller.ui.screens.settings.container
 
-import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.google.android.libraries.launcherclient.LauncherClientCallbacks
@@ -59,7 +58,7 @@ class SettingsViewModelImpl : SettingsViewModel(){
     override val reconnectOverlayBus = _reconnectOverlayBus.asSharedFlow()
 
     override val snackbarShowing = overlayLoadState.map {
-        it == OverlayLoadState.WAITING_FOR_RESTART || it == OverlayLoadState.TIMEOUT
+        it == OverlayLoadState.RESTART || it == OverlayLoadState.WAITING_FOR_RESTART || it == OverlayLoadState.TIMEOUT
     }
 
     override fun onOverlayScrollChanged(progress: Float) {
@@ -69,7 +68,6 @@ class SettingsViewModelImpl : SettingsViewModel(){
     }
 
     override fun onServiceStateChanged(overlayAttached: Boolean, hotwordActive: Boolean) {
-        Log.d("DrawerOverlayClient", "onServiceStateChanged $overlayAttached")
         viewModelScope.launch {
             if(overlayAttached) {
                 _overlayLoadState.emit(OverlayLoadState.RUNNING)
@@ -116,6 +114,8 @@ class SettingsViewModelImpl : SettingsViewModel(){
     private suspend fun restartGsa(){
         withContext(Dispatchers.IO) {
             Shell.su("am force-stop ${GoogleApp.PACKAGE_NAME}").exec()
+            delay(500)
+            Shell.su("am startservice -n com.google.android.googlequicksearchbox/com.google.android.apps.gsa.nowoverlayservice.DrawerOverlayService")
         }
     }
 

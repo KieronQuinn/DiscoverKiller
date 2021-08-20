@@ -49,6 +49,8 @@ abstract class SettingsConfigurationViewModel : ViewModel() {
     abstract fun onXDAClicked()
     abstract fun onLibrariesClicked(context: Context)
 
+    abstract fun onDumpLogsClicked()
+
 }
 
 class SettingsConfigurationViewModelImpl(
@@ -175,6 +177,12 @@ class SettingsConfigurationViewModelImpl(
         viewModelScope.launch {
             OssLicensesMenuActivity.setActivityTitle(context.getString(R.string.libraries))
             navigation.navigate(Intent(context, OssLicensesMenuActivity::class.java))
+        }
+    }
+
+    override fun onDumpLogsClicked() {
+        viewModelScope.launch {
+            navigation.navigate(SettingsConfigurationFragmentDirections.actionSettingsConfigurationFragmentToSettingsDumpLogsBottomSheetFragment())
         }
     }
 

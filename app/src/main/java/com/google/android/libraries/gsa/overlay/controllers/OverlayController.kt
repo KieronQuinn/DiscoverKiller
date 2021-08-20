@@ -40,7 +40,6 @@ open class OverlayController(context: Context?, theme: Int, dialogTheme: Int) :
 
     fun cnC(): com.google.android.libraries.launcherclient.ILauncherOverlayCallback? {
         BJ(0)
-        Log.d("DOC", "cnC")
         try {
             windowView?.let {
                 windowManager?.removeView(it)

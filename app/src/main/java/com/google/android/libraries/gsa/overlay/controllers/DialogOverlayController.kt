@@ -101,7 +101,6 @@ open class DialogOverlayController(context: Context?, theme: Int, dialogTheme: I
     }
 
     override fun startActivity(intent: Intent, bundle: Bundle?) {
-        Log.d("DOC", "startActivity")
         super.startActivity(intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK), bundle)
     }
 

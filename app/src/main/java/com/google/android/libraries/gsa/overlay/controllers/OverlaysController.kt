@@ -37,7 +37,7 @@ abstract class OverlaysController(private val service: Service) {
             } else {
                 val parseInt: Int
                 if (port != Binder.getCallingUid()) {
-                    Log.e(
+                    Log.i(
                         "OverlaySController",
                         "Calling with an invalid UID, the interface will not work " + port + " vs " + Binder.getCallingUid()
                     )
@@ -51,7 +51,7 @@ abstract class OverlaysController(private val service: Service) {
                 try {
                     i = data.getQueryParameter("cv")!!.toInt()
                 } catch (e2: Exception) {
-                    Log.d("OverlaySController", "Client version not available")
+                    Log.e("OverlaySController", "Client version not available")
                 }
                 val packagesForUid = service.packageManager.getPackagesForUid(port)
                 val host = data.host

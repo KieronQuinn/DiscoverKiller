@@ -26,6 +26,7 @@ import android.content.pm.ActivityInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
 import android.os.Binder;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.IBinder;
 import android.util.Log;
@@ -38,6 +39,7 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -197,12 +199,15 @@ public class LocalActivityManagerCompat {
                 pendingActions = null;
             }
 
-            mActivityThread.handleStartActivity(r, pendingActions);
+            //mActivityThread.handleStartActivity(r, pendingActions);
+            ActivityThreadCompat.handleStartActivity(r, mActivityThread, pendingActions);
+
             r.curState = STARTED;
 
             if (desiredState == RESUMED) {
                 if (localLOGV) Log.v(TAG, r.id + ": resuming");
-                mActivityThread.performResumeActivity(r, true, "moveToState-INITIALIZING");
+                //mActivityThread.performResumeActivity(r, true, "moveToState-INITIALIZING");
+                ActivityThreadCompat.performResumeActivity(r, mActivityThread, true, "moveToState-INITIALIZING");
                 r.curState = RESUMED;
             }
 
@@ -219,13 +224,16 @@ public class LocalActivityManagerCompat {
             case CREATED:
                 if (desiredState == STARTED) {
                     if (localLOGV) Log.v(TAG, r.id + ": restarting");
-                    mActivityThread.performRestartActivity(r, true /* start */);
+                    //mActivityThread.performRestartActivity(r, true /* start */);
+                    ActivityThreadCompat.performRestartActivity(r, mActivityThread, true);
                     r.curState = STARTED;
                 }
                 if (desiredState == RESUMED) {
                     if (localLOGV) Log.v(TAG, r.id + ": restarting and resuming");
-                    mActivityThread.performRestartActivity(r, true /* start */);
-                    mActivityThread.performResumeActivity(r, true, "moveToState-CREATED");
+                    //mActivityThread.performRestartActivity(r, true /* start */);
+                    ActivityThreadCompat.performRestartActivity(r, mActivityThread, true);
+                    //mActivityThread.performResumeActivity(r, true, "moveToState-CREATED");
+                    ActivityThreadCompat.performResumeActivity(r, mActivityThread, true, "moveToState-CREATED");
                     r.curState = RESUMED;
                 }
                 return;
@@ -234,13 +242,14 @@ public class LocalActivityManagerCompat {
                 if (desiredState == RESUMED) {
                     // Need to resume it...
                     if (localLOGV) Log.v(TAG, r.id + ": resuming");
-                    mActivityThread.performResumeActivity(r, true, "moveToState-STARTED");
+                    //mActivityThread.performResumeActivity(r, true, "moveToState-STARTED");
+                    ActivityThreadCompat.performResumeActivity(r, mActivityThread, true, "moveToState-STARTED");
                     r.instanceState = null;
                     r.curState = RESUMED;
                 }
                 if (desiredState == CREATED) {
                     if (localLOGV) Log.v(TAG, r.id + ": stopping");
-                    mActivityThread.performStopActivity(r, false, "moveToState-STARTED");
+                    ActivityThreadCompat.performStopActivity(r, mActivityThread, false, "moveToState-STARTED");
                     r.curState = CREATED;
                 }
                 return;
@@ -255,13 +264,7 @@ public class LocalActivityManagerCompat {
                     if (localLOGV) Log.v(TAG, r.id + ": pausing");
                     performPause(r, mFinishing);
                     if (localLOGV) Log.v(TAG, r.id + ": stopping");
-                    try {
-                        Method performStopActivity = ActivityThread.class.getDeclaredMethod("performStopActivity", IBinder.class, boolean.class, String.class);
-                        performStopActivity.setAccessible(true);
-                        performStopActivity.invoke(mActivityThread, r, false, "moveToState-RESUMED");
-                    } catch (NoSuchMethodException | IllegalAccessException | InvocationTargetException e) {
-                        e.printStackTrace();
-                    }
+                    ActivityThreadCompat.performStopActivity(r, mActivityThread, false, "moveToState-RESUMED");
                     r.curState = CREATED;
                 }
                 return;
@@ -318,9 +321,7 @@ public class LocalActivityManagerCompat {
         // call #reportSizeConfigurations(), but the server might not know anything about the
         // activity if it was launched from LocalAcvitivyManager.
         try {
-            Method performLaunchActivity = ActivityThread.class.getDeclaredMethod("performLaunchActivity", ActivityClientRecord.class, Intent.class);
-            performLaunchActivity.setAccessible(true);
-            return (Activity) performLaunchActivity.invoke(activityThread, r, null);
+            return ActivityThreadCompat.performLaunchActivity(r, mActivityThread, intent);
         } catch (NoSuchMethodException | InvocationTargetException | IllegalAccessException e) {
             e.printStackTrace();
         }
@@ -331,9 +332,7 @@ public class LocalActivityManagerCompat {
         final boolean needState = r.instanceState == null;
         Bundle instanceState = new Bundle();
         try {
-            Method performPauseActivity = ActivityThread.class.getDeclaredMethod("performPauseActivity", IBinder.class, boolean.class, String.class, PendingTransactionActions.class);
-            performPauseActivity.setAccessible(true);
-            instanceState = (Bundle) performPauseActivity.invoke(mActivityThread, r, finishing, "performPause", null /* pendingActions */);
+            instanceState = ActivityThreadCompat.performPauseActivity(r, mActivityThread, finishing, "performPause", null /* pendingActions */);
         } catch (NoSuchMethodException | IllegalAccessException | InvocationTargetException e) {
             e.printStackTrace();
         }
@@ -443,7 +442,8 @@ public class LocalActivityManagerCompat {
                     ArrayList<ReferrerIntent> intents = new ArrayList<>(1);
                     intents.add(new ReferrerIntent(intent, mParent.getPackageName()));
                     if (localLOGV) Log.v(TAG, r.id + ": new intent");
-                    mActivityThread.handleNewIntent(r, intents);
+                    //mActivityThread.handleNewIntent(r, intents);
+                    ActivityThreadCompat.handleNewIntent(r, mActivityThread, intents);
                     r.intent = intent;
                     moveToState(r, mCurState);
                     if (mSingleMode) {
@@ -490,14 +490,8 @@ public class LocalActivityManagerCompat {
             performPause(r, finish);
         }
         if (localLOGV) Log.v(TAG, r.id + ": destroying");
-        try {
-            Method performDestroyActivity = ActivityThread.class.getDeclaredMethod("performDestroyActivity", IBinder.class, boolean.class, int.class, boolean.class, String.class);
-            performDestroyActivity.setAccessible(true);
-            performDestroyActivity.invoke(mActivityThread, r, finish, 0 /* configChanges */,
-                    false /* getNonConfigInstance */, "LocalActivityManager::performDestroy");
-        } catch (NoSuchMethodException | IllegalAccessException | InvocationTargetException e) {
-            e.printStackTrace();
-        }
+        ActivityThreadCompat.performDestroyActivity(r, mActivityThread, finish, 0 /* configChanges */,
+                            false /* getNonConfigInstance */, "LocalActivityManager::performDestroy");
         r.activity = null;
         r.window = null;
         if (finish) {
@@ -767,16 +761,94 @@ public class LocalActivityManagerCompat {
         for (int i=0; i<N; i++) {
             LocalActivityRecord r = mActivityArray.get(i);
             if (localLOGV) Log.v(TAG, r.id + ": destroying");
-            try {
-                Method performDestroyActivity = ActivityThread.class.getDeclaredMethod("performDestroyActivity", IBinder.class, boolean.class, int.class, boolean.class, String.class);
-                performDestroyActivity.setAccessible(true);
-                performDestroyActivity.invoke(mActivityThread, r, false, 0 /* configChanges */,
-                        false /* getNonConfigInstance */, "LocalActivityManager::dispatchDestroy");
-            } catch (NoSuchMethodException | IllegalAccessException | InvocationTargetException e) {
-                e.printStackTrace();
-            }
+            ActivityThreadCompat.performDestroyActivity(r, mActivityThread, false, 0 /* configChanges */,
+                                    false /* getNonConfigInstance */, "LocalActivityManager::dispatchDestroy");
         }
         mActivities.clear();
         mActivityArray.clear();
+    }
+
+    /**
+     *  Handles changes in to method signatures in Android 12, and cleans access to those that require reflection
+     */
+    private static class ActivityThreadCompat {
+
+        private static boolean isAtLeastS(){
+            return Build.VERSION.SDK_INT >= Build.VERSION_CODES.S;
+        }
+
+        private static void handleStartActivity(IBinder binder, ActivityThread mActivityThread, PendingTransactionActions pendingActions){
+            if(isAtLeastS()) {
+                mActivityThread.handleStartActivity(mActivityThread.getActivityClient(binder), pendingActions, null);
+            }else{
+                mActivityThread.handleStartActivity(binder, pendingActions);
+            }
+        }
+
+        private static void performResumeActivity(IBinder binder, ActivityThread mActivityThread, boolean finalStateRequest, String reason){
+            if(isAtLeastS()) {
+                mActivityThread.performResumeActivity(mActivityThread.getActivityClient(binder), finalStateRequest, reason);
+            }else{
+                mActivityThread.performResumeActivity(binder, finalStateRequest, reason);
+            }
+        }
+
+        private static void performRestartActivity(IBinder binder, ActivityThread mActivityThread, boolean start){
+            if(isAtLeastS()) {
+                mActivityThread.performRestartActivity(mActivityThread.getActivityClient(binder), start);
+            }else{
+                mActivityThread.performRestartActivity(binder, start);
+            }
+        }
+
+        private static void performDestroyActivity(IBinder binder, ActivityThread mActivityThread, boolean finishing, int configChanges, boolean getNonConfigInstance, String reason){
+            try{
+                if(isAtLeastS()){
+                    Method performDestroyActivity = ActivityThread.class.getDeclaredMethod("performDestroyActivity", IBinder.class, boolean.class, int.class, boolean.class, String.class);
+                    performDestroyActivity.setAccessible(true);
+                    performDestroyActivity.invoke(mActivityThread, binder, finishing, configChanges /* configChanges */,
+                            getNonConfigInstance /* getNonConfigInstance */, reason);
+                }else{
+                    Method performDestroyActivity = ActivityThread.class.getDeclaredMethod("performDestroyActivity", ActivityClientRecord.class, boolean.class, int.class, boolean.class, String.class);
+                    performDestroyActivity.setAccessible(true);
+                    performDestroyActivity.invoke(mActivityThread, mActivityThread.getActivityClient(binder), finishing, configChanges /* configChanges */,
+                            getNonConfigInstance /* getNonConfigInstance */, reason);
+                }
+            } catch (NoSuchMethodException | IllegalAccessException | InvocationTargetException e) {
+                // Suppress
+            }
+        }
+
+        private static void handleNewIntent(IBinder binder, ActivityThread mActivityThread, List<ReferrerIntent> intents){
+            if(isAtLeastS()) {
+                mActivityThread.handleNewIntent(mActivityThread.getActivityClient(binder), intents);
+            }else{
+                mActivityThread.handleNewIntent(binder, intents);
+            }
+        }
+
+        private static Activity performLaunchActivity(ActivityClientRecord activityClientRecord, ActivityThread mActivityThread, Intent customIntent) throws NoSuchMethodException, InvocationTargetException, IllegalAccessException {
+            Method performLaunchActivity = ActivityThread.class.getDeclaredMethod("performLaunchActivity", ActivityClientRecord.class, Intent.class);
+            performLaunchActivity.setAccessible(true);
+            return (Activity) performLaunchActivity.invoke(mActivityThread, activityClientRecord, null);
+        }
+
+        @SuppressLint("DiscouragedPrivateApi")
+        private static void performStopActivity(IBinder binder, ActivityThread mActivityThread, boolean saveState, String reason) {
+            try {
+                Method performStopActivity = ActivityThread.class.getDeclaredMethod("performStopActivity", IBinder.class, boolean.class, String.class);
+                performStopActivity.setAccessible(true);
+                performStopActivity.invoke(mActivityThread, binder, saveState, reason);
+            } catch (NoSuchMethodException | IllegalAccessException | InvocationTargetException e) {
+                // Suppress
+            }
+        }
+
+        private static Bundle performPauseActivity(IBinder token, ActivityThread mActivityThread, boolean finished, String reason, PendingTransactionActions pendingActions) throws NoSuchMethodException, InvocationTargetException, IllegalAccessException {
+            Method performPauseActivity = ActivityThread.class.getDeclaredMethod("performPauseActivity", IBinder.class, boolean.class, String.class, PendingTransactionActions.class);
+            performPauseActivity.setAccessible(true);
+            return (Bundle) performPauseActivity.invoke(mActivityThread, token, finished, reason, null /* pendingActions */);
+        }
+
     }
 }

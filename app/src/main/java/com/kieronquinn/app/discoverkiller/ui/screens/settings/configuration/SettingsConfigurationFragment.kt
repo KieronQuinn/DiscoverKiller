@@ -234,6 +234,7 @@ class SettingsConfigurationFragment :
         when(menuItem.itemId){
             R.id.menu_main_libraries -> viewModel.onLibrariesClicked(requireContext())
             R.id.menu_main_restart_overlay -> settingsViewModel.reloadOverlay()
+            R.id.menu_main_dump_overlay_logs -> viewModel.onDumpLogsClicked()
         }
         return true
     }

@@ -16,6 +16,8 @@ import com.kieronquinn.app.discoverkiller.ui.screens.settings.configuration.Sett
 import com.kieronquinn.app.discoverkiller.ui.screens.settings.configuration.SettingsConfigurationViewModelImpl
 import com.kieronquinn.app.discoverkiller.ui.screens.settings.container.SettingsViewModel
 import com.kieronquinn.app.discoverkiller.ui.screens.settings.container.SettingsViewModelImpl
+import com.kieronquinn.app.discoverkiller.ui.screens.settings.dumplogs.SettingsDumpLogsBottomSheetViewModel
+import com.kieronquinn.app.discoverkiller.ui.screens.settings.dumplogs.SettingsDumpLogsBottomSheetViewModelImpl
 import com.kieronquinn.app.discoverkiller.utils.AppIconRequestHandler
 import com.kieronquinn.monetcompat.core.MonetCompat
 import com.squareup.picasso.Picasso
@@ -43,6 +45,7 @@ class DiscoverKiller : Application() {
             viewModel<SettingsConfigurationViewModel> { SettingsConfigurationViewModelImpl(get(), get()) }
             viewModel<SettingsAppPickerViewModel> { SettingsAppPickerViewModelImpl(get()) }
             viewModel<SettingsBackgroundPickerViewModel> { SettingsBackgroundPickerViewModelImpl(get()) }
+            viewModel<SettingsDumpLogsBottomSheetViewModel> { SettingsDumpLogsBottomSheetViewModelImpl(get(), get()) }
         }
     }
 

@@ -5,9 +5,13 @@ import android.view.View
 import androidx.lifecycle.lifecycleScope
 import androidx.viewpager2.widget.ViewPager2
 import com.google.android.libraries.launcherclient.LauncherClient
+import com.kieronquinn.app.discoverkiller.components.xposed.XposedSelfHook
 import com.kieronquinn.app.discoverkiller.databinding.FragmentSettingsContainerBinding
 import com.kieronquinn.app.discoverkiller.ui.base.BoundFragment
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.withContext
 import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 
 class SettingsContainerFragment :
@@ -55,6 +59,22 @@ class SettingsContainerFragment :
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         launcherClient.onAttachedToWindow()
+        setupWithXposedDelayIfNeeded()
+    }
+
+    private fun setupWithXposedDelayIfNeeded() = lifecycleScope.launchWhenResumed {
+        //Give time for Xposed hooks to start if needed
+        if(!XposedSelfHook.isXposedHooked()){
+            withContext(Dispatchers.IO) {
+                delay(2000)
+            }
+            setup()
+        }else{
+            setup()
+        }
+    }
+
+    private fun setup(){
         setupViewPager()
         setupShowListener()
         setupReconnectListener()
