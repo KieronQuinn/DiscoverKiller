@@ -3,4 +3,5 @@
     xmlns:android="http://schemas.android.com/apk/res/android">
     <item android:title="@string/libraries" android:id="@+id/menu_main_libraries" />
     <item android:title="@string/menu_restart_overlay" android:id="@+id/menu_main_restart_overlay" />
+    <item android:title="@string/bottom_sheet_dump_logs_title" android:id="@+id/menu_main_dump_overlay_logs" />
 </menu>

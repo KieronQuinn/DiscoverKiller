@@ -7,6 +7,13 @@ import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.isVisible
 import com.kieronquinn.app.discoverkiller.R
+import android.content.ContextWrapper
+
+import android.app.Activity
+import android.content.Context
+import android.util.Log
+import com.kieronquinn.app.discoverkiller.utils.OverlayContext
+
 
 fun View.onApplyInsets(doOnApply: (View, WindowInsetsCompat) -> Unit) {
     ViewCompat.setOnApplyWindowInsetsListener(this){ view, insets ->
@@ -48,3 +55,28 @@ fun Animation.onEnd(callback: () -> Unit){
         }
     })
 }
+
+val View.activity: Activity?
+    get() {
+        var context = context
+        while (context is ContextWrapper) {
+            if (context is Activity) {
+                return context
+            }
+            context = context.baseContext
+        }
+        return null
+    }
+
+val View.isInOverlay: Boolean
+    get() {
+        var context = context
+        while (context is ContextWrapper) {
+            Log.d("GAS", "looking for context, found ${context.javaClass.simpleName}")
+            if (context is OverlayContext) {
+                return true
+            }
+            context = context.baseContext
+        }
+        return false
+    }

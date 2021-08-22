@@ -10,16 +10,15 @@ import android.os.IBinder
 import android.util.AttributeSet
 import android.util.Log
 import android.view.View
-import android.view.ViewGroup
 import android.widget.TextView
-import androidx.core.view.children
 import com.kieronquinn.app.discoverkiller.components.intentforwarder.IntentForwarder
 import com.kieronquinn.app.discoverkiller.components.settings.RemoteSettings
 import com.kieronquinn.app.discoverkiller.model.RemoteSettingsHolder
-import com.kieronquinn.app.discoverkiller.ui.screens.overlay.snapshot.SnapshotOverlay
 import com.kieronquinn.app.discoverkiller.ui.controllers.DiscoverKillerOverlayController
+import com.kieronquinn.app.discoverkiller.ui.screens.overlay.snapshot.SnapshotOverlay
 import com.kieronquinn.app.discoverkiller.utils.extensions.SecureBroadcastReceiver
 import com.kieronquinn.app.discoverkiller.utils.extensions.isDarkMode
+import com.kieronquinn.app.discoverkiller.utils.extensions.isInOverlay
 import de.robv.android.xposed.XC_MethodHook
 import de.robv.android.xposed.XposedHelpers
 import de.robv.android.xposed.callbacks.XC_LoadPackage
@@ -189,8 +188,8 @@ class GoogleApp: XposedApp(PACKAGE_NAME) {
         XposedHelpers.findAndHookMethod(TextView::class.java, "setTextColor", ColorStateList::class.java, object: XC_MethodHook(){
             override fun beforeHookedMethod(param: MethodHookParam) {
                 super.beforeHookedMethod(param)
-                if(!isDiscoverActivityShowing) return
                 val textView = param.thisObject as TextView
+                if(!isDiscoverActivityShowing) return
                 if(!textView.context.isDarkMode) return
                 val textColors = param.args[0] as ColorStateList
                 val textColor = textColors.defaultColor
@@ -273,7 +272,7 @@ class GoogleApp: XposedApp(PACKAGE_NAME) {
      *  stored SwipeRefreshLayout, this is a no-op.
      */
     private fun setupZeroStateRefreshListenerHooks(lpparam: XC_LoadPackage.LoadPackageParam){
-        var swipeRefreshLayout: Any? = null
+        var swipeRefreshLayout: View? = null
         var isWaitingForSwipeRefreshInit = false
         val zeroStateRefreshReceiver = SecureBroadcastReceiver { _, _ ->
             swipeRefreshLayout?.let {
@@ -288,6 +287,8 @@ class GoogleApp: XposedApp(PACKAGE_NAME) {
             override fun beforeHookedMethod(param: MethodHookParam) {
                 super.beforeHookedMethod(param)
                 val activity = param.thisObject as Activity
+                isDiscoverActivityShowing = activity.isFromDiscoverKiller
+                if(!activity.isFromDiscoverKiller) return
                 isWaitingForSwipeRefreshInit = true
                 activity.registerReceiver(zeroStateRefreshReceiver, IntentFilter(
                     ACTION_RELOAD_SNAPSHOT
@@ -299,7 +300,7 @@ class GoogleApp: XposedApp(PACKAGE_NAME) {
                 super.afterHookedMethod(param)
                 if(isWaitingForSwipeRefreshInit){
                     isWaitingForSwipeRefreshInit = false
-                    swipeRefreshLayout = param.thisObject
+                    swipeRefreshLayout = param.thisObject as View
                 }
             }
         })

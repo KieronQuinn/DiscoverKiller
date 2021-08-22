@@ -59,4 +59,9 @@
     <string name="donate">Donate</string>
     <string name="twitter">Follow me on Twitter</string>
     <string name="error_retry">Retry</string>
+    <string name="bottom_sheet_dump_logs_title">Dump Overlay Logs</string>
+    <string name="bottom_sheet_dump_logs_continue">Continue</string>
+    <string name="bottom_sheet_dump_logs_content">This will save some of the logs related to the overlay, if they exist. You must choose a location to save to. If asked, please attach the log file to your XDA reply or GitHub issue.</string>
+    <string name="bottom_sheet_dump_logs_result_success">Dump complete</string>
+    <string name="bottom_sheet_dump_logs_result_failed">Dump failed</string>
 </resources>

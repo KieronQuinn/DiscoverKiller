@@ -8,13 +8,15 @@ import com.kieronquinn.app.discoverkiller.components.settings.Settings
 import com.kieronquinn.app.discoverkiller.model.RemoteSettingsHolder
 import com.kieronquinn.app.discoverkiller.ui.screens.overlay.applauncher.AppLauncherOverlay
 import com.kieronquinn.app.discoverkiller.ui.screens.overlay.snapshot.SnapshotOverlay
+import com.kieronquinn.app.discoverkiller.utils.OverlayContext
 
 class DiscoverKillerOverlayController(service: Service, private val settings: RemoteSettingsHolder): ConfigurationOverlayController(service) {
 
     override fun getOverlay(context: Context): OverlayController {
+        val overlayContext = OverlayContext(context)
         return when(settings.overlayMode){
-            Settings.OverlayMode.SNAPSHOT -> SnapshotOverlay(context, settings)
-            Settings.OverlayMode.APP -> AppLauncherOverlay(context, settings)
+            Settings.OverlayMode.SNAPSHOT -> SnapshotOverlay(overlayContext, settings)
+            Settings.OverlayMode.APP -> AppLauncherOverlay(overlayContext, settings)
         }
     }
 

@@ -192,11 +192,13 @@ class SnapshotOverlay(context: Context, private val settings: RemoteSettingsHold
         val window = localActivityManager.startActivity("overlay", intent).apply {
             addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS)
             addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION)
+            statusBarColor = Color.TRANSPARENT
+            navigationBarColor = Color.TRANSPARENT
         }
         window.decorView.post {
             lifecycleScope.launchWhenResumed {
                 rethemeViews(window.decorView)
-                window.decorView.findViewById<View>(zeroStateInputPlateUpdatesIconId).visibility = View.GONE
+                window.decorView.findViewById<View>(zeroStateInputPlateUpdatesIconId)?.visibility = View.GONE
             }
         }
         binding.overlayContainer.addView(window.decorView.removeStatusNavBackgroundOnPreDraw())

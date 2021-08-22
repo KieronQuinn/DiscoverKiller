@@ -104,7 +104,6 @@ class AppLauncherOverlay(private val context: Context, private val settings: Rem
     private var isWaitingForOpen = false
     override fun onPanelOpen() {
         super.onPanelOpen()
-        Log.d("ALO", "onPanelOpen")
         appLaunchIntent?.let {
             isWaitingForOpen = true
             startActivity(it)

@@ -28,7 +28,6 @@ class BlurProvider31(resources: Resources): BlurProvider() {
 
     override fun applyBlurToWindow(window: Window, ratio: Float) {
         val radius = blurRadiusOfRatio(ratio)
-        Log.d("BP", "setBackgroundBlurRadius $radius")
         window.attributes.blurBehindRadius = radius
     }
 

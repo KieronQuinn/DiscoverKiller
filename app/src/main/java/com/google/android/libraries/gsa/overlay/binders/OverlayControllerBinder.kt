@@ -19,12 +19,7 @@ class OverlayControllerBinder(
     val mClientVersion: Int
 ) : ILauncherOverlay.Stub(), Runnable {
 
-    init {
-        Log.d("OCB", "OCB INIT!")
-    }
-
     override fun onTransact(code: Int, data: Parcel, reply: Parcel?, flags: Int): Boolean {
-        Log.d("OCB", "onTransact $code")
         return super.onTransact(code, data, reply, flags)
     }
 
@@ -35,7 +30,6 @@ class OverlayControllerBinder(
 
     private fun checkCallerId() {
         if (getCallingUid() != mCallerUid) {
-            Log.d("OCB", "Invalid client!")
             throw RuntimeException("Invalid client")
         }
     }
@@ -44,21 +38,18 @@ class OverlayControllerBinder(
     override fun startScroll() {
         checkCallerId()
         Message.obtain(mainThreadHandler, 3).sendToTarget()
-        Log.d("OCB", "startScroll")
     }
 
     @Synchronized
     override fun onScroll(progress: Float) {
         checkCallerId()
         Message.obtain(mainThreadHandler, 4, progress).sendToTarget()
-        Log.d("OCB", "onScroll")
     }
 
     @Synchronized
     override fun endScroll() {
         checkCallerId()
         Message.obtain(mainThreadHandler, 5).sendToTarget()
-        Log.d("OCB", "endScroll")
     }
 
     @Synchronized
@@ -71,7 +62,6 @@ class OverlayControllerBinder(
         bundle.putParcelable("layout_params", layoutParams)
         bundle.putInt("client_options", clientOptions)
         windowAttached2(bundle, callback)
-        Log.d("OCB", "windowAttached")
         //overlaysController.originalOverlay?.windowAttached(layoutParams, callback, clientOptions)
     }
 
@@ -84,7 +74,6 @@ class OverlayControllerBinder(
             configuration != null && configuration.orientation == Configuration.ORIENTATION_LANDSCAPE
         createCallback(bundle.getInt("client_options", 7))
         Message.obtain(mainThreadHandler, 0, 1, 0, Pair.create(bundle, callback)).sendToTarget()
-        Log.d("OCB", "windowAttached2")
         //overlaysController.originalOverlay?.windowAttached2(bundle, callback)
     }
 
@@ -93,7 +82,6 @@ class OverlayControllerBinder(
         checkCallerId()
         Message.obtain(mainThreadHandler, 0, 0, 0).sendToTarget()
         overlaysController.handler.postDelayed(this, if (isChangingConfigurations) 5000 else 0.toLong())
-        Log.d("OCB", "windowDetached")
         //overlaysController.originalOverlay?.windowDetached(isChangingConfigurations)
     }
 
@@ -106,14 +94,12 @@ class OverlayControllerBinder(
         } else {
             Message.obtain(mainThreadHandler, 1, i).sendToTarget()
         }
-        Log.d("OCB", "setActivityState")
         //overlaysController.originalOverlay?.setActivityState(i)
     }
 
     @Synchronized
     override fun onPause() {
         setActivityState(0)
-        Log.d("OCB", "onPause")
         //overlaysController.originalOverlay?.onPause()
     }
 
@@ -137,13 +123,11 @@ class OverlayControllerBinder(
                 mainThreadHandler = Handler(Looper.getMainLooper(), baseCallback)
             }
         }
-        Log.d("OCB", "createCallback")
     }
 
     @Synchronized
     override fun onResume() {
         setActivityState(3)
-        Log.d("OCB", "onResume")
         //overlaysController.originalOverlay?.onResume()
     }
 
@@ -152,7 +136,6 @@ class OverlayControllerBinder(
         checkCallerId()
         mainThreadHandler.removeMessages(6)
         Message.obtain(mainThreadHandler, 6, 0, flags).sendToTarget()
-        Log.d("OCB", "closeOverlay")
     }
 
     @Synchronized
@@ -160,7 +143,6 @@ class OverlayControllerBinder(
         checkCallerId()
         mainThreadHandler.removeMessages(6)
         Message.obtain(mainThreadHandler, 6, 1, flags).sendToTarget()
-        Log.d("OCB", "openOverlay")
     }
 
     override fun startSearch(data: ByteArray, bundle: Bundle): Boolean {
@@ -175,19 +157,16 @@ class OverlayControllerBinder(
     }
 
     override fun unusedMethod() {
-        Log.d("OCB", "unusedMethod")
     }
 
     @Synchronized
     override fun requestVoiceDetection(start: Boolean) {
-        Log.d("OCB", "requestVoiceDetection $start")
         /*overlaysController.originalOverlay?.requestVoiceDetection(start)?.let {
             return it
         }*/
     }
 
     override fun getVoiceSearchLanguage(): String? {
-        Log.d("OCB", "getVoiceSearchLanguage")
         /*overlaysController.originalOverlay?.voiceSearchLanguage?.let {
             return it
         } ?: run {
@@ -197,7 +176,6 @@ class OverlayControllerBinder(
     }
 
     override fun isVoiceDetectionRunning(): Boolean {
-        Log.d("OCB", "isVoiceDetectionRunning")
         /*overlaysController.originalOverlay?.isVoiceDetectionRunning?.let {
             return it
         } ?: run {
@@ -207,7 +185,6 @@ class OverlayControllerBinder(
     }
 
     override fun hasOverlayContent(): Boolean {
-        Log.d("OCB", "hasOverlayContent")
         return true
     }
 
