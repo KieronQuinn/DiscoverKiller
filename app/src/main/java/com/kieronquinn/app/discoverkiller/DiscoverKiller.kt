@@ -18,6 +18,8 @@ import com.kieronquinn.app.discoverkiller.ui.screens.settings.container.Settings
 import com.kieronquinn.app.discoverkiller.ui.screens.settings.container.SettingsViewModelImpl
 import com.kieronquinn.app.discoverkiller.ui.screens.settings.dumplogs.SettingsDumpLogsBottomSheetViewModel
 import com.kieronquinn.app.discoverkiller.ui.screens.settings.dumplogs.SettingsDumpLogsBottomSheetViewModelImpl
+import com.kieronquinn.app.discoverkiller.ui.screens.settings.error.errorignore.ErrorIgnoreBottomSheetViewModel
+import com.kieronquinn.app.discoverkiller.ui.screens.settings.error.errorignore.ErrorIgnoreBottomSheetViewModelImpl
 import com.kieronquinn.app.discoverkiller.utils.AppIconRequestHandler
 import com.kieronquinn.monetcompat.core.MonetCompat
 import com.squareup.picasso.Picasso
@@ -46,6 +48,7 @@ class DiscoverKiller : Application() {
             viewModel<SettingsAppPickerViewModel> { SettingsAppPickerViewModelImpl(get()) }
             viewModel<SettingsBackgroundPickerViewModel> { SettingsBackgroundPickerViewModelImpl(get()) }
             viewModel<SettingsDumpLogsBottomSheetViewModel> { SettingsDumpLogsBottomSheetViewModelImpl(get(), get()) }
+            viewModel<ErrorIgnoreBottomSheetViewModel> { ErrorIgnoreBottomSheetViewModelImpl(get()) }
         }
     }
 

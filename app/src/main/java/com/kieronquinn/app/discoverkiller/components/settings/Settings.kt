@@ -20,6 +20,7 @@ abstract class Settings {
     abstract var overlayApp: String
     abstract var overlayAppNewTask: Boolean
     abstract var autoReloadSnapshot: Boolean
+    abstract var ignoreXposedWarnings: Boolean
 
     abstract fun toRemoteSettings(): RemoteSettingsHolder
 
@@ -61,6 +62,9 @@ class SettingsImpl(context: Context): Settings() {
         private const val KEY_AUTO_RELOAD_SNAPSHOT = "auto_reload_snapshot"
         private const val DEFAULT_AUTO_RELOAD_SNAPSHOT = true
 
+        private const val KEY_IGNORE_XPOSED_WARNINGS = "ignore_xposed_warnings"
+        private const val DEFAULT_IGNORE_XPOSED_WARNINGS = false
+
         fun getDefaultRemoteSettings(): RemoteSettingsHolder {
             return RemoteSettingsHolder(DEFAULT_OVERLAY_ENABLED, DEFAULT_OVERLAY_MODE, DEFAULT_OVERLAY_BACKGROUND, DEFAULT_USE_MONET, null, DEFAULT_OVERLAY_APP, DEFAULT_OVERLAY_APP_NEW_TASK, DEFAULT_AUTO_RELOAD_SNAPSHOT)
         }
@@ -74,6 +78,7 @@ class SettingsImpl(context: Context): Settings() {
     override var overlayApp by shared(KEY_OVERLAY_APP, DEFAULT_OVERLAY_APP)
     override var overlayAppNewTask by shared(KEY_OVERLAY_APP_NEW_TASK, DEFAULT_OVERLAY_APP_NEW_TASK)
     override var autoReloadSnapshot by shared(KEY_AUTO_RELOAD_SNAPSHOT, DEFAULT_AUTO_RELOAD_SNAPSHOT)
+    override var ignoreXposedWarnings by shared(KEY_IGNORE_XPOSED_WARNINGS, DEFAULT_IGNORE_XPOSED_WARNINGS)
 
     override fun toRemoteSettings(): RemoteSettingsHolder {
         return RemoteSettingsHolder(overlayEnabled, overlayMode, overlayBackground, useMonet, monetColor, overlayApp, overlayAppNewTask, autoReloadSnapshot)

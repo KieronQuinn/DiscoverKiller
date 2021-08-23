@@ -103,23 +103,4 @@ abstract class BaseOverlay<T: ViewBinding>(context: Context, private val viewBin
         return lifecycleRegistry
     }
 
-    /**
-     *  The standard [Window.setNavigationBarColor] and [Window.setStatusBarColor] don't work for
-     *  this embedded window so we make them invisible manually
-     */
-    internal fun View.removeStatusNavBackgroundOnPreDraw() = apply {
-        doOnPreDraw {
-            val statusBarBackground = it.findViewById<View>(android.R.id.statusBarBackground)
-            statusBarBackground?.run {
-                visibility = View.INVISIBLE
-                alpha = 0f
-            }
-            val navigationBarBackground = it.findViewById<View>(android.R.id.navigationBarBackground)
-            navigationBarBackground?.run {
-                visibility = View.INVISIBLE
-                alpha = 0f
-            }
-        }
-    }
-
 }

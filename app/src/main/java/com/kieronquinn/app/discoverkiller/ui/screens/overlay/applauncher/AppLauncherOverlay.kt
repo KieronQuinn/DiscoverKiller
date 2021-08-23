@@ -18,6 +18,7 @@ import com.kieronquinn.app.discoverkiller.model.RemoteSettingsHolder
 import com.kieronquinn.app.discoverkiller.ui.screens.overlay.snapshot.SnapshotOverlay
 import com.kieronquinn.app.discoverkiller.utils.extensions.isAppInstalled
 import com.kieronquinn.app.discoverkiller.utils.extensions.isDarkMode
+import com.kieronquinn.app.discoverkiller.utils.extensions.removeStatusNavBackgroundOnPreDraw
 import com.kieronquinn.monetcompat.core.MonetCompat
 import kotlinx.coroutines.delay
 import org.koin.android.ext.android.get

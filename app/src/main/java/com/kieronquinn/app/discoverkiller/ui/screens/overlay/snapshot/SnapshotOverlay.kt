@@ -25,6 +25,7 @@ import com.kieronquinn.app.discoverkiller.components.xposed.apps.GoogleApp.Compa
 import com.kieronquinn.app.discoverkiller.databinding.OverlaySnapshotBinding
 import com.kieronquinn.app.discoverkiller.model.RemoteSettingsHolder
 import com.kieronquinn.app.discoverkiller.utils.extensions.isDarkMode
+import com.kieronquinn.app.discoverkiller.utils.extensions.removeStatusNavBackgroundOnPreDraw
 import com.kieronquinn.app.discoverkiller.utils.extensions.sendSecureBroadcast
 import com.kieronquinn.monetcompat.core.MonetCompat
 import java.lang.ref.WeakReference
@@ -92,10 +93,15 @@ class SnapshotOverlay(context: Context, private val settings: RemoteSettingsHold
         else BACKGROUND_COLOR_DISCOVER_LIGHT
     }
 
+    private val defaultAccentColor by lazy {
+        Color.parseColor("#03A9F4")
+    }
+
     private val monet by lazy {
         setupMonet()
         MonetCompat.setup(context).apply {
             defaultBackgroundColor = discoverDefaultBackgroundColor
+            defaultAccentColor = this@SnapshotOverlay.defaultAccentColor
             updateMonetColors()
         }
     }
@@ -125,7 +131,8 @@ class SnapshotOverlay(context: Context, private val settings: RemoteSettingsHold
         ViewCompat.setOnApplyWindowInsetsListener(binding.root){ view, insets ->
             lifecycleScope.launchWhenResumed {
                 val containerInsets = insets.getInsets(WindowInsetsCompat.Type.statusBars() or WindowInsetsCompat.Type.navigationBars())
-                binding.overlayContainer.updatePadding(top = containerInsets.top, left = containerInsets.left, right = containerInsets.right, bottom = containerInsets.bottom)
+                //Top insets handled in Xposed to allow drawing behind status
+                binding.overlayContainer.updatePadding(left = containerInsets.left, right = containerInsets.right, bottom = containerInsets.bottom)
             }
             insets
         }
@@ -189,6 +196,9 @@ class SnapshotOverlay(context: Context, private val settings: RemoteSettingsHold
     }
 
     private fun setupWithZeroStateActivity(intent: Intent) = lifecycleScope.launchWhenResumed {
+        if(settings.useMonet){
+            monet.awaitMonetReady()
+        }
         val window = localActivityManager.startActivity("overlay", intent).apply {
             addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS)
             addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION)
@@ -204,7 +214,7 @@ class SnapshotOverlay(context: Context, private val settings: RemoteSettingsHold
         binding.overlayContainer.addView(window.decorView.removeStatusNavBackgroundOnPreDraw())
     }
 
-    private suspend fun rethemeViews(root: View){
+    private fun rethemeViews(root: View){
         val views = ArrayList<View>()
         val textViews = ArrayList<TextView>()
         val imageViews = ArrayList<ImageView>()
@@ -222,9 +232,8 @@ class SnapshotOverlay(context: Context, private val settings: RemoteSettingsHold
         }
     }
 
-    private suspend fun getBackgroundColor(context: Context): Int {
+    private fun getBackgroundColor(context: Context): Int {
         return if(settings.useMonet){
-            monet.awaitMonetReady()
             monet.getBackgroundColor(context, isDarkMode)
         }else{
             discoverDefaultBackgroundColor

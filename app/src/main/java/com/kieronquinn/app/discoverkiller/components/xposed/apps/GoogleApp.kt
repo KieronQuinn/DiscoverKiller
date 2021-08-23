@@ -4,27 +4,32 @@ import android.app.Activity
 import android.app.Service
 import android.content.*
 import android.content.res.ColorStateList
-import android.graphics.Color
+import android.graphics.*
 import android.os.Bundle
 import android.os.IBinder
 import android.util.AttributeSet
-import android.util.Log
 import android.view.View
+import android.widget.FrameLayout
+import android.widget.ImageButton
+import android.widget.ImageView
 import android.widget.TextView
+import androidx.core.view.WindowInsetsCompat
+import androidx.core.view.updatePadding
 import com.kieronquinn.app.discoverkiller.components.intentforwarder.IntentForwarder
 import com.kieronquinn.app.discoverkiller.components.settings.RemoteSettings
 import com.kieronquinn.app.discoverkiller.model.RemoteSettingsHolder
 import com.kieronquinn.app.discoverkiller.ui.controllers.DiscoverKillerOverlayController
 import com.kieronquinn.app.discoverkiller.ui.screens.overlay.snapshot.SnapshotOverlay
-import com.kieronquinn.app.discoverkiller.utils.extensions.SecureBroadcastReceiver
-import com.kieronquinn.app.discoverkiller.utils.extensions.isDarkMode
-import com.kieronquinn.app.discoverkiller.utils.extensions.isInOverlay
+import com.kieronquinn.app.discoverkiller.utils.extensions.*
+import com.kieronquinn.monetcompat.core.MonetCompat
 import de.robv.android.xposed.XC_MethodHook
 import de.robv.android.xposed.XposedHelpers
 import de.robv.android.xposed.callbacks.XC_LoadPackage
 import java.io.FileDescriptor
 import java.io.PrintWriter
 import java.lang.reflect.Field
+import kotlin.system.exitProcess
+
 
 /**
  *  Hooks for the Google App / googlequicksearchbox
@@ -40,7 +45,6 @@ class GoogleApp: XposedApp(PACKAGE_NAME) {
         const val INTENT_KEY_FROM_DISCOVER_KILLER = "from_discover_killer"
 
         const val ACTION_RELOAD_SNAPSHOT = "$PACKAGE_NAME.RELOAD_SNAPSHOT"
-        const val ACTION_RELOAD_SERVICE = "$PACKAGE_NAME.RELOAD_SERVICE"
 
         //ZeroState = Snapshot, EnterOpa is required to launch it properly
         private const val ZERO_STATE_CLASS_NAME = "com.google.android.apps.gsa.staticplugins.opa.ZeroStateActivity"
@@ -57,6 +61,10 @@ class GoogleApp: XposedApp(PACKAGE_NAME) {
     private var discoverKillerOverlayController: DiscoverKillerOverlayController? = null
     private var isDiscoverActivityShowing = false
     private var remoteSettings: RemoteSettingsHolder? = null
+
+    private val monet by lazy {
+        MonetCompat.getInstance()
+    }
 
     override fun onAppLoaded(lpparam: XC_LoadPackage.LoadPackageParam) {
         setupDrawerOverlayServiceHooks(lpparam)
@@ -131,6 +139,9 @@ class GoogleApp: XposedApp(PACKAGE_NAME) {
         setupZeroStateColorHooks()
         setupZeroStateActivityStartHooks(lpparam)
         setupZeroStateRefreshListenerHooks(lpparam)
+        setupZeroStateRecyclerHooks(lpparam)
+        setupZeroStateImageViewHooks()
+        setupZeroStateBackgroundHooks(lpparam)
     }
 
     /**
@@ -166,6 +177,7 @@ class GoogleApp: XposedApp(PACKAGE_NAME) {
                 super.afterHookedMethod(param)
                 val activity = param.thisObject as Activity
                 if(activity.isFromDiscoverKiller) {
+                    activity.window.decorView.removeStatusNavBackgroundOnPreDraw()
                     isDiscoverActivityShowing = true
                 }
             }
@@ -255,6 +267,87 @@ class GoogleApp: XposedApp(PACKAGE_NAME) {
                 val activity = param.thisObject as Activity
                 if(activity.isFromDiscoverKiller){
                     param.result = ComponentName(activity, ZERO_STATE_CLASS_NAME)
+                }
+            }
+        })
+    }
+
+    /**
+     *  Applies top padding to Zero State's main RecyclerView, to allow it to draw behind the
+     *  status bar without clipping
+     */
+    private fun setupZeroStateRecyclerHooks(lpparam: XC_LoadPackage.LoadPackageParam){
+        XposedHelpers.findAndHookConstructor("android.support.v7.widget.RecyclerView", lpparam.classLoader, Context::class.java, AttributeSet::class.java, Integer.TYPE, object: XC_MethodHook(){
+            override fun afterHookedMethod(param: MethodHookParam) {
+                super.afterHookedMethod(param)
+                val view = param.thisObject as View
+                view.runAfterPostIfIdMatches({ isDiscoverActivityShowing },"zero_state_content_view") {
+                    view.onApplyInsets(true) { view, insets ->
+                        view.updatePadding(top = insets.getInsets(WindowInsetsCompat.Type.statusBars()).top)
+                    }
+                }
+            }
+        })
+    }
+
+    /**
+     *  Tints the lightbulb and settings icons, sets a long click of the profile icon to restart the overlay
+     */
+    private fun setupZeroStateImageViewHooks() {
+        XposedHelpers.findAndHookConstructor(ImageView::class.java, Context::class.java, AttributeSet::class.java, Integer.TYPE, Integer.TYPE, object: XC_MethodHook(){
+            override fun afterHookedMethod(param: MethodHookParam) {
+                super.afterHookedMethod(param)
+                val view = param.thisObject as View
+                view.runAfterPostIfIdMatches({ isDiscoverActivityShowing },"contextual_greeting_profile_icon") { profileIcon ->
+                    profileIcon.setOnLongClickListener {
+                        exitProcess(0)
+                    }
+                }
+                view.runAfterPostIfIdMatches({ isDiscoverActivityShowing && remoteSettings?.useMonet == true },"contextual_greeting_updates_center_entrypoint", "generic_stacked_cards_section_customization_icon", "zero_state_input_plate_lens_icon", "zero_state_input_plate_keyboard_icon"){ imageview ->
+                    imageview as ImageView
+                    imageview.imageTintList = ColorStateList.valueOf(monet.getAccentColor(view.context))
+                }
+            }
+        })
+    }
+
+    /**
+     *  Tints the backgrounds of the FAB and bottom pill to monet background secondary if enabled,
+     *  and disables elevation on the cards if monet is enabled.
+     */
+    private fun setupZeroStateBackgroundHooks(lpparam: XC_LoadPackage.LoadPackageParam) {
+        XposedHelpers.findAndHookConstructor(FrameLayout::class.java, Context::class.java, AttributeSet::class.java, Integer.TYPE, Integer.TYPE, object: XC_MethodHook(){
+            override fun afterHookedMethod(param: MethodHookParam) {
+                super.afterHookedMethod(param)
+                val view = param.thisObject as View
+                view.runAfterPostIfIdMatches({ isDiscoverActivityShowing && remoteSettings?.useMonet == true },"zero_state_input_plate_inner_container") { container ->
+                    val monet = MonetCompat.getInstance()
+                    container.background.run {
+                        val paint = this::class.java.declaredFields.firstOrNull { it.type == Paint::class.java }!!.apply {
+                            isAccessible = true
+                        }.get(this) as Paint
+                        paint.color = monet.getBackgroundColorSecondary(view.context) ?: monet.getBackgroundColor(view.context)
+                        container.invalidate()
+                    }
+                }
+            }
+        })
+        XposedHelpers.findAndHookConstructor(ImageButton::class.java, Context::class.java, AttributeSet::class.java, Integer.TYPE, object: XC_MethodHook(){
+            override fun afterHookedMethod(param: MethodHookParam) {
+                super.afterHookedMethod(param)
+                val view = param.thisObject as View
+                view.runAfterPostIfIdMatches({ isDiscoverActivityShowing && remoteSettings?.useMonet == true },"zero_state_fab"){ fab ->
+                    fab.backgroundTintList = ColorStateList.valueOf(monet.getBackgroundColorSecondary(view.context) ?: monet.getBackgroundColor(view.context))
+                }
+            }
+        })
+
+        XposedHelpers.findAndHookConstructor("com.facebook.litho.LithoView", lpparam.classLoader, Context::class.java, AttributeSet::class.java, object: XC_MethodHook(){
+            override fun afterHookedMethod(param: MethodHookParam) {
+                super.afterHookedMethod(param)
+                val view = param.thisObject as View
+                view.runAfterPostIfIdMatches({ isDiscoverActivityShowing && remoteSettings?.useMonet == true },"zero_state_eml_card"){ card ->
+                    card.elevation = 0f
                 }
             }
         })
