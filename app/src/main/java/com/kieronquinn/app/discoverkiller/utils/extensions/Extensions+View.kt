@@ -12,13 +12,24 @@ import android.content.ContextWrapper
 import android.app.Activity
 import android.content.Context
 import android.util.Log
+import android.view.Window
+import androidx.core.view.doOnPreDraw
+import com.kieronquinn.app.discoverkiller.components.xposed.apps.GoogleApp
 import com.kieronquinn.app.discoverkiller.utils.OverlayContext
 
-
-fun View.onApplyInsets(doOnApply: (View, WindowInsetsCompat) -> Unit) {
+/**
+ *  Provide a block to run when window insets change. [reApplyNow] = `true` will trigger the block
+ *  immediately with root window insets, if they exist.
+ */
+fun View.onApplyInsets(reApplyNow: Boolean = false, doOnApply: (View, WindowInsetsCompat) -> Unit) {
     ViewCompat.setOnApplyWindowInsetsListener(this){ view, insets ->
         doOnApply.invoke(view, insets)
         insets
+    }
+    if(reApplyNow){
+        ViewCompat.getRootWindowInsets(this)?.let {
+            doOnApply.invoke(this, it)
+        }
     }
 }
 
@@ -56,6 +67,41 @@ fun Animation.onEnd(callback: () -> Unit){
     })
 }
 
+/**
+ *  The standard [Window.setNavigationBarColor] and [Window.setStatusBarColor] don't work for
+ *  this embedded window so we make them invisible manually
+ */
+fun View.removeStatusNavBackgroundOnPreDraw() = apply {
+    doOnPreDraw {
+        val statusBarBackground = it.findViewById<View>(android.R.id.statusBarBackground)
+        statusBarBackground?.run {
+            visibility = View.INVISIBLE
+            alpha = 0f
+        }
+        val navigationBarBackground = it.findViewById<View>(android.R.id.navigationBarBackground)
+        navigationBarBackground?.run {
+            visibility = View.INVISIBLE
+            alpha = 0f
+        }
+    }
+}
+
+/**
+ *  Runs a given [block] if the view ID is in [idStrings] and it is attached to the
+ *  Discover Killer activity.
+ */
+fun View.runAfterPostIfIdMatches(flag: () -> Boolean, vararg idStrings: String, block: (View) -> Unit){
+    val ids = idStrings.map {
+        context.resources.getIdentifier(it, "id", context.packageName)
+    }.filter { it != 0x0 }
+    post {
+        if(!flag()) return@post
+        if(!isAttachedToWindow) return@post
+        if(!ids.contains(id)) return@post
+        block.invoke(this)
+    }
+}
+
 val View.activity: Activity?
     get() {
         var context = context
@@ -66,17 +112,4 @@ val View.activity: Activity?
             context = context.baseContext
         }
         return null
-    }
-
-val View.isInOverlay: Boolean
-    get() {
-        var context = context
-        while (context is ContextWrapper) {
-            Log.d("GAS", "looking for context, found ${context.javaClass.simpleName}")
-            if (context is OverlayContext) {
-                return true
-            }
-            context = context.baseContext
-        }
-        return false
     }

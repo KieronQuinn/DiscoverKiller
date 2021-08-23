@@ -64,4 +64,9 @@
     <string name="bottom_sheet_dump_logs_content">This will save some of the logs related to the overlay, if they exist. You must choose a location to save to. If asked, please attach the log file to your XDA reply or GitHub issue.</string>
     <string name="bottom_sheet_dump_logs_result_success">Dump complete</string>
     <string name="bottom_sheet_dump_logs_result_failed">Dump failed</string>
+    <string name="bottom_sheet_error_ignore_title">Warning</string>
+    <string name="bottom_sheet_error_ignore_content">Discover Killer will <b>not</b> work without a working Xposed installation. You can skip the checks at your own risk, but please do not report issues related to the overlay not working if your Xposed installation is non-functional.</string>
+    <string name="bottom_sheet_error_ignore_continue">Continue</string>
+    <string name="bottom_sheet_error_ignore_checkbox">I understand</string>
+    <string name="error_ignore">Ignore</string>
 </resources>

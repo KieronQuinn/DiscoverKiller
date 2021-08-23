@@ -13,8 +13,8 @@ android {
         applicationId "com.kieronquinn.app.discoverkiller"
         minSdkVersion 29
         targetSdkVersion 31
-        versionCode 21
-        versionName "2.1"
+        versionCode 22
+        versionName "2.2"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
@@ -68,7 +68,7 @@ dependencies {
     //Stubs for hidden APIs used by overlay. Shouldn't be included in APK.
     compileOnly project(':systemstubs')
 
-    implementation "androidx.fragment:fragment-ktx:1.4.0-alpha06"
+    implementation "androidx.fragment:fragment-ktx:1.4.0-alpha07"
     implementation "androidx.navigation:navigation-fragment-ktx:$nav_version"
     implementation "androidx.navigation:navigation-ui-ktx:$nav_version"
 
