@@ -17,7 +17,7 @@ Discover Killer is an Xposed module that allows you to replace the Google Discov
 Discover Killer has a number of options to configure the 'overlay' (the panel to the left of your home screen), including:
 
 **Replace it with another overlay**
-- Supported overlays include Entertainment Space; which shows TV shows, music and games, a custom RSS feed, and HomeFeeder. See the Wiki page for more info 
+- Supported overlays include Entertainment Space; which shows TV shows, music and games, a custom RSS feed, and HomeFeeder. See the [Wiki page](https://github.com/KieronQuinn/DiscoverKiller/wiki/Available-Overlays "Wiki page") for more info 
 
 OR
 
