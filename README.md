@@ -32,4 +32,4 @@ The module should work on any launcher that has the Discover page. It hooks the 
 
 This module has been tested and is working with LSposed, but should also work with EdXposed. Make sure you enable hooking for the Google App when enabling the module (it should be pre-selected)
 
-Downloads are on releases page or on the [XDA thread](https://forum.xda-developers.com/xposed/modules/app-discoverkiller-replace-google-t4120997)
+Downloads are on releases page or on the [XDA thread](https://forum.xda-developers.com/t/app-xposed-11-07-discover-killer-replace-the-google-discover-page-on-your-home-screen.4120997)
