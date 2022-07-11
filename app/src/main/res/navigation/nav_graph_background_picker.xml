@@ -3,9 +3,8 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/nav_graph_background_picker"
     app:startDestination="@id/settingsBackgroundPickerFragment2">
-
     <fragment
         android:id="@+id/settingsBackgroundPickerFragment2"
-        android:name="com.kieronquinn.app.discoverkiller.ui.screens.settings.backgroundpicker.SettingsBackgroundPickerFragment"
+        android:name="com.kieronquinn.app.discoverkiller.ui.screens.backgroundpicker.SettingsBackgroundPickerFragment"
         android:label="SettingsBackgroundPickerFragment" />
 </navigation>

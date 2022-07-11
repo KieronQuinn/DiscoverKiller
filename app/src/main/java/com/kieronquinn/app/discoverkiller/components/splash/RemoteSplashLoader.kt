@@ -2,7 +2,10 @@ package com.kieronquinn.app.discoverkiller.components.splash
 
 import android.annotation.SuppressLint
 import android.app.WallpaperManager
+import android.content.ComponentName
 import android.content.Context
+import android.content.pm.PackageItemInfo
+import android.content.pm.PackageManager
 import android.content.res.Resources
 import android.graphics.Bitmap
 import android.graphics.Canvas
@@ -23,13 +26,23 @@ import androidx.annotation.ColorInt
 import androidx.annotation.StringRes
 import androidx.core.content.ContextCompat
 import androidx.palette.graphics.Palette
+import com.kieronquinn.app.discoverkiller.BuildConfig
 import com.kieronquinn.app.discoverkiller.R
 import com.kieronquinn.app.discoverkiller.databinding.SplashBinding
+import com.kieronquinn.app.discoverkiller.repositories.SettingsRepository
+import com.kieronquinn.app.discoverkiller.service.OverlayRssService
+import com.kieronquinn.app.discoverkiller.service.OverlayUnsetService
+import com.kieronquinn.app.discoverkiller.ui.screens.overlays.rss.RssOverlay
+import com.kieronquinn.app.discoverkiller.ui.screens.overlays.unset.UnsetOverlay
+import com.kieronquinn.app.discoverkiller.utils.extensions.isAppInstalled
 import com.kieronquinn.app.discoverkiller.utils.extensions.isDarkMode
+import com.kieronquinn.app.discoverkiller.utils.extensions.toComponent
 import com.kieronquinn.app.discoverkiller.utils.extensions.toHexString
 import com.kieronquinn.monetcompat.core.MonetCompat
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
+import java.lang.Exception
+import androidx.core.splashscreen.R as SplashscreenR
 
 @SuppressLint("CustomSplashScreen") //Shush.
 abstract class RemoteSplashLoader {
@@ -44,7 +57,9 @@ abstract class RemoteSplashLoader {
     abstract fun getMonetBackgroundForPackage(context: Context, packageName: String): SplashScreen.MonetBackground?
 
     abstract suspend fun inflateSplashScreen(context: Context, splashScreenType: SplashScreenType, packageName: String, parent: ViewGroup? = null, isPreview: Boolean = false): View
-    abstract suspend fun inflateSplashScreenIntoBitmap(context: Context, splashScreenType: SplashScreenType, packageName: String): Bitmap
+    abstract suspend fun inflateSplashScreenIntoBitmap(context: Context, splashScreenType: SplashScreenType, component: String): Bitmap
+
+    abstract suspend fun getOverlayPreview(context: Context, overlayComponent: ComponentName): OverlayPreview
 
     sealed class SplashScreen(open val type: SplashScreenType) {
 
@@ -129,10 +144,39 @@ abstract class RemoteSplashLoader {
         TRANSPARENT(R.string.splash_type_transparent_title, R.string.splash_type_transparent_desc)
     }
 
+    sealed class OverlayPreview {
+        data class Icon(val info: PackageItemInfo): OverlayPreview()
+        data class Preview(val resource: Int): OverlayPreview()
+    }
+
 }
 
 @SuppressLint("CustomSplashScreen") //Shush.
 class RemoteSplashLoaderImpl: RemoteSplashLoader() {
+
+    companion object {
+        private val COMPONENT_ENTERTAINMENT_SPACE = ComponentName(
+            "com.google.android.apps.mediahome.launcher",
+            "com.google.android.apps.mediahome.launcher.overlayservice.OverlayService"
+        )
+
+        private val COMPONENT_HOMEFEEDER = ComponentName(
+            "ua.itaysonlab.homefeeder",
+            "ua.itaysonlab.homefeeder.overlay.DrawerOverlayService"
+        )
+
+        private val PREVIEWS = mapOf(
+            OverlayRssService.COMPONENT to Pair(
+                R.drawable.preview_rss, R.drawable.preview_rss_dark
+            ),
+            COMPONENT_ENTERTAINMENT_SPACE to Pair(
+                R.drawable.preview_entertainment_space, R.drawable.preview_entertainment_space_dark
+            ),
+            COMPONENT_HOMEFEEDER to Pair(
+                R.drawable.preview_homefeeder, R.drawable.preview_homefeeder_dark
+            ),
+        )
+    }
 
     /**
      *  Returns the first viable Splash for a package, in the order of [RemoteSplashLoader.SplashScreenType.values]
@@ -231,9 +275,9 @@ class RemoteSplashLoaderImpl: RemoteSplashLoader() {
     }
 
     private fun getCoreSplashScreenForContext(themedContext: Context): SplashScreen.Core? {
-        val backgroundColor = themedContext.theme.getResolvedAttribute(R.attr.windowSplashScreenBackground)?.getColorOrNull(themedContext, false)
+        val backgroundColor = themedContext.theme.getResolvedAttribute(SplashscreenR.attr.windowSplashScreenBackground)?.getColorOrNull(themedContext, false)
             ?: themedContext.theme.getResolvedAttribute(android.R.attr.windowBackground)?.getColorOrNull(themedContext) ?: return null
-        val splashIcon = themedContext.theme.getResolvedAttribute(R.attr.windowSplashScreenAnimatedIcon)?.getDrawable(themedContext) ?: return null
+        val splashIcon = themedContext.theme.getResolvedAttribute(SplashscreenR.attr.windowSplashScreenAnimatedIcon)?.getDrawable(themedContext) ?: return null
         return SplashScreen.Core(backgroundColor, splashIcon)
     }
 
@@ -348,11 +392,16 @@ class RemoteSplashLoaderImpl: RemoteSplashLoader() {
     override suspend fun inflateSplashScreenIntoBitmap(
         context: Context,
         splashScreenType: SplashScreenType,
-        packageName: String
+        component: String
     ): Bitmap {
         return withContext(Dispatchers.IO) {
             val width = Resources.getSystem().displayMetrics.widthPixels
             val height = Resources.getSystem().displayMetrics.heightPixels
+            val packageName = try {
+                ComponentName.unflattenFromString(component)
+            }catch (e: Exception){
+                null
+            }?.packageName ?: BuildConfig.APPLICATION_ID
             val splashView = inflateSplashScreen(
                 context,
                 splashScreenType,
@@ -371,6 +420,27 @@ class RemoteSplashLoaderImpl: RemoteSplashLoader() {
             splashView.draw(canvas)
             return@withContext bitmap
         }
+    }
+
+    override suspend fun getOverlayPreview(
+        context: Context,
+        overlayComponent: ComponentName
+    ): OverlayPreview {
+        val info = try {
+            context.packageManager.getServiceInfo(overlayComponent, 0)
+        }catch (e: PackageManager.NameNotFoundException){
+            context.packageManager.getServiceInfo(
+                ComponentName(context, OverlayUnsetService::class.java), 0
+            )
+        }
+        PREVIEWS[info.toComponent()]?.let {
+            return if(context.isDarkMode){
+                OverlayPreview.Preview(it.second)
+            }else{
+                OverlayPreview.Preview(it.first)
+            }
+        }
+        return OverlayPreview.Icon(info)
     }
 
     /**
@@ -393,7 +463,11 @@ class RemoteSplashLoaderImpl: RemoteSplashLoader() {
                 ColorDrawable(data)
             }
             resourceId != 0 -> {
-                ContextCompat.getDrawable(context, resourceId)
+                try {
+                    ContextCompat.getDrawable(context, resourceId)
+                }catch (e: Resources.NotFoundException){
+                    null
+                }
             }
             else -> null
         }

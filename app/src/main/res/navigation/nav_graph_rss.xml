@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_graph_rss"
+    app:startDestination="@id/rssConfigureFragment">
+
+    <fragment
+        android:id="@+id/rssConfigureFragment"
+        android:name="com.kieronquinn.app.discoverkiller.ui.screens.rssconfigure.RssConfigureFragment"
+        android:label="RssConfigureFragment"
+        tools:layout="@layout/fragment_rss_configure" >
+        <action
+            android:id="@+id/action_rssConfigureFragment_to_rssLogoBottomSheetFragment"
+            app:destination="@id/rssLogoBottomSheetFragment" />
+        <action
+            android:id="@+id/action_rssConfigureFragment_to_rssUrlBottomSheetFragment"
+            app:destination="@id/rssUrlBottomSheetFragment" />
+        <action
+            android:id="@+id/action_rssConfigureFragment_to_rssTitleBottomSheetFragment"
+            app:destination="@id/rssTitleBottomSheetFragment" />
+    </fragment>
+    <dialog
+        android:id="@+id/rssLogoBottomSheetFragment"
+        android:name="com.kieronquinn.app.discoverkiller.ui.screens.rssconfigure.logo.RssLogoBottomSheetFragment"
+        android:label="RssLogoBottomSheetFragment" />
+    <dialog
+        android:id="@+id/rssUrlBottomSheetFragment"
+        android:name="com.kieronquinn.app.discoverkiller.ui.screens.rssconfigure.url.RssUrlBottomSheetFragment"
+        android:label="RssUrlBottomSheetFragment" />
+    <dialog
+        android:id="@+id/rssTitleBottomSheetFragment"
+        android:name="com.kieronquinn.app.discoverkiller.ui.screens.rssconfigure.title.RssTitleBottomSheetFragment"
+        android:label="RssTitleBottomSheetFragment" />
+
+</navigation>

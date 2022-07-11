@@ -1,0 +1,82 @@
+<animated-vector xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:aapt="http://schemas.android.com/aapt">
+    <aapt:attr name="android:drawable">
+        <vector
+            android:name="vector"
+            android:width="512dp"
+            android:height="512dp"
+            android:viewportWidth="512"
+            android:viewportHeight="512">
+            <group
+                android:pivotX="256"
+                android:pivotY="256"
+                android:scaleX="0.75"
+                android:scaleY="0.75">
+                <group
+                    android:name="group"
+                    android:pivotX="256"
+                    android:pivotY="256">
+                    <path
+                        android:name="path_5"
+                        android:fillColor="#f72515"
+                        android:pathData="M 43.24 235.18 L 468.76 235.18 L 468.76 276.82 L 43.24 276.82 Z"
+                        android:strokeWidth="0.75" />
+                    <path
+                        android:name="path_6"
+                        android:fillColor="#00a63f"
+                        android:pathData="M 276.82 43.24 L 276.82 468.76 L 235.18 468.76 L 235.18 43.24 Z"
+                        android:strokeWidth="0.75" />
+                    <path
+                        android:name="path_7"
+                        android:fillColor="#247bf5"
+                        android:pathData="M 422.654 119.754 L 121.766 420.642 L 92.322 391.198 L 393.21 90.31 Z"
+                        android:strokeWidth="0.75" />
+                    <path
+                        android:name="path_8"
+                        android:fillColor="#fab400"
+                        android:pathData="M 391.198 419.678 L 90.31 118.79 L 119.754 89.346 L 420.642 390.234 Z"
+                        android:strokeWidth="0.75" />
+                </group>
+                <group
+                    android:name="group_3"
+                    android:pivotX="256"
+                    android:pivotY="256"
+                    android:scaleX="0.65"
+                    android:scaleY="0.65">
+                    <path
+                        android:name="path_9"
+                        android:fillColor="#5f6368"
+                        android:pathData="M 256 256 M 199.75 256 C 199.75 241.087 205.68 226.77 216.225 216.225 C 226.77 205.68 241.087 199.75 256 199.75 C 270.913 199.75 285.23 205.68 295.775 216.225 C 306.32 226.77 312.25 241.087 312.25 256 C 312.25 270.913 306.32 285.23 295.775 295.775 C 285.23 306.32 270.913 312.25 256 312.25 C 241.087 312.25 226.77 306.32 216.225 295.775 C 205.68 285.23 199.75 270.913 199.75 256"
+                        android:strokeWidth="0.879844" />
+                </group>
+            </group>
+        </vector>
+    </aapt:attr>
+    <target android:name="group">
+        <aapt:attr name="android:animation">
+            <set>
+                <objectAnimator
+                    android:duration="750"
+                    android:interpolator="@android:interpolator/fast_out_slow_in"
+                    android:propertyName="scaleX"
+                    android:valueFrom="0"
+                    android:valueTo="0.75"
+                    android:valueType="floatType" />
+                <objectAnimator
+                    android:duration="750"
+                    android:interpolator="@android:interpolator/fast_out_slow_in"
+                    android:propertyName="scaleY"
+                    android:valueFrom="0"
+                    android:valueTo="0.75"
+                    android:valueType="floatType" />
+                <objectAnimator
+                    android:duration="750"
+                    android:interpolator="@android:interpolator/fast_out_slow_in"
+                    android:propertyName="rotation"
+                    android:valueFrom="0"
+                    android:valueTo="360"
+                    android:valueType="floatType" />
+            </set>
+        </aapt:attr>
+    </target>
+</animated-vector>

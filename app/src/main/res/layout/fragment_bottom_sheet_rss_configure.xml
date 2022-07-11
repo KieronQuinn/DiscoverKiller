@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:animateLayoutChanges="true"
+    tools:layout_gravity="bottom">
+
+    <TextView
+        android:id="@+id/rss_configure_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/padding_16"
+        android:paddingTop="@dimen/padding_8"
+        android:paddingBottom="@dimen/padding_8"
+        android:textAppearance="@style/TextAppearance.AppCompat.Large.DiscoverKiller"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:text="Title" />
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/rss_configure_input"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/padding_16"
+        android:layout_marginTop="@dimen/padding_8"
+        android:layout_marginEnd="@dimen/padding_16"
+        android:paddingBottom="@dimen/padding_8"
+        android:textAppearance="@style/TextAppearance.AppCompat.Small.DiscoverKiller.Medium"
+        app:boxCornerRadiusBottomEnd="@dimen/padding_8"
+        app:boxCornerRadiusBottomStart="@dimen/padding_8"
+        app:boxCornerRadiusTopEnd="@dimen/padding_8"
+        app:boxCornerRadiusTopStart="@dimen/padding_8"
+        app:hintTextAppearance="@style/TextAppearance.AppCompat.Small.DiscoverKiller.Medium"
+        app:layout_constraintBottom_toTopOf="@id/rss_configure_positive"
+        app:layout_constraintTop_toBottomOf="@id/rss_configure_title"
+        tools:hint="Hint">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/rss_configure_edit"
+            android:inputType="text"
+            android:lines="1"
+            android:maxLines="1"
+            android:imeOptions="actionDone"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/rss_configure_positive"
+        style="@style/Widget.AppCompat.Button.Borderless.Colored"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/padding_8"
+        android:layout_marginEnd="@dimen/padding_16"
+        android:fontFamily="@font/google_sans_text_medium"
+        android:textAllCaps="false"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/rss_configure_input"
+        tools:text="Positive" />
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/rss_configure_negative"
+        style="@style/Widget.AppCompat.Button.Borderless.Colored"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/padding_8"
+        android:layout_marginEnd="@dimen/padding_16"
+        android:fontFamily="@font/google_sans_text_medium"
+        android:textAllCaps="false"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/rss_configure_positive"
+        app:layout_constraintTop_toBottomOf="@id/rss_configure_input"
+        tools:text="Negative" />
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/rss_configure_neutral"
+        style="@style/Widget.AppCompat.Button.Borderless.Colored"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/padding_16"
+        android:layout_marginTop="@dimen/padding_8"
+        android:fontFamily="@font/google_sans_text_medium"
+        android:textAllCaps="false"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/rss_configure_input"
+        tools:text="Neutral" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

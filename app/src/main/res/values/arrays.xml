@@ -3,5 +3,6 @@
     <string-array name="scope">
         <item>com.kieronquinn.app.discoverkiller</item>
         <item>com.google.android.googlequicksearchbox</item>
+        <item>com.google.android.apps.mediahome.launcher</item>
     </string-array>
 </resources>

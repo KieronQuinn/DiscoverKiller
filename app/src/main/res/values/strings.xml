@@ -1,35 +1,36 @@
 <resources>
     <string name="app_name">Discover Killer</string>
-    <string name="xposed_desc">Change the Google Discover feed to Google Snapshot, or launch any app you want</string>
-    <string name="search">Search</string>
-    <string name="nothing_found">Nothing found</string>
-    <string name="no_app_selected">No app is selected to launch in DiscoverKiller</string>
-    <string name="app_launch_failed">Failed to launch app</string>
-    <string name="app_launch_not_set">No app set to launch</string>
-    <string name="fab_preview">Preview</string>
-    <string name="overlay_snapshot">Google Snapshot</string>
-    <string name="overlay_app">Custom App</string>
+    <string name="xposed_desc">Change the Google Discover feed to a custom overlay, or launch any app you want</string>
+    <string name="notification_channel_service_foreground_title">Background Service</string>
+    <string name="notification_channel_service_foreground_subtitle">Background Service</string>
+    <string name="notification_service_foreground_title">@string/app_name</string>
+    <string name="notification_service_foreground_subtitle">Running</string>
+    <string name="loading">Loading…</string>
+    <string name="overlay_unset_setup">Tap to configure</string>
     <string name="overlay_choose">Pick an overlay</string>
-    <string name="switch_main">Enable Discover Killer</string>
-    <string name="configuration_snapshot_auto_reload">Automatically Reload Snapshot</string>
-    <string name="configuration_snapshot_auto_reload_desc">Reload Snapshot when returning home to keep it up-to-date. May cause higher data usage and white flashes when in dark mode</string>
-    <string name="configuration_snapshot_monet">Material You Colors</string>
-    <string name="configuration_snapshot_monet_desc">Apply Material You (Monet) colors to the background of Snapshot</string>
-    <string name="configuration_app_package">Select App</string>
-    <string name="configuration_app_package_desc">Choose the app to launch when the overlay is fully opened</string>
-    <string name="configuration_app_package_desc_selected">Selected app: %1s</string>
-    <string name="configuration_app_new_task">Start as New Task</string>
-    <string name="configuration_app_new_task_desc">Always start the app as a new launch, without resuming it if it already open</string>
-    <string name="configuration_app_monet">Overlay Background</string>
-    <string name="configuration_app_monet_desc">Set which background to use for the overlay when swiping</string>
-    <string name="configuration_shared_monet_colors">Wallpaper Color</string>
-    <string name="configuration_shared_monet_colors_desc">Choose the color to use for Material You from your wallpaper</string>
-    <string name="configuration_info_app_launch">Due to system limitations, Custom Apps are launched when the overlay is fully opened, rather than being embedded.</string>
-    <string name="snackbar_reloading_overlay">Reloading overlay…</string>
-    <string name="snackbar_overlay_timeout">Reload timed out. Try restarting the app.</string>
-    <string name="loading_apps">Loading apps…</string>
-    <string name="app_search_empty">No apps found</string>
-    <string name="settings_background_picker_apply">Apply</string>
+    <string name="overlay_custom">Custom Overlay</string>
+    <string name="overlay_app">Custom App</string>
+
+    <string name="overlay_type_now">Classic Overlay</string>
+    <string name="overlay_type_media">Media Overlay</string>
+    <string name="overlay_unset">[Unset]</string>
+
+    <string name="search">Search</string>
+    <string name="overlay_picker_empty">No Overlays Found</string>
+    <string name="app_picker_empty">No Apps Found</string>
+
+    <string name="settings_main_switch">Enable Discover Killer</string>
+    <string name="settings_overlay_picker">Select Overlay</string>
+    <string name="settings_app_picker">Select App</string>
+    <string name="settings_restart">Automatically Restart Overlay</string>
+    <string name="settings_restart_content">Automatically stops and restarts the overlay when not in use. This fixes an issue where it will sometimes stop working and display a black screen instead.\n<b>Note:</b> This breaks the Provider Settings on Entertainment Space, temporarily disable this if you wish to change providers.</string>
+    <string name="settings_monet">Material You Colours</string>
+    <string name="settings_monet_content">Use Material You colours in the Overlay where possible</string>
+    <string name="settings_app_new_task">Start as New Task</string>
+    <string name="settings_app_new_task_content">Always start the app as a new launch, without resuming it if it already open</string>
+    <string name="settings_original_handler">Google App Handles Search</string>
+    <string name="settings_original_handler_content">Let the original Google App service handle search-related interactions, rather than the custom overlay</string>
+
     <string name="splash_type_default_title">Default</string>
     <string name="splash_type_default_desc">Automatically attempts to select the best splash screen</string>
     <string name="splash_type_native_title">Native</string>
@@ -44,29 +45,75 @@
     <string name="splash_type_monet_background_desc">Use the Material You background color, generated from your wallpaper, with the icon on top. On supported apps, the icon will be tinted to the primary Material You color</string>
     <string name="splash_type_transparent_title">Transparent</string>
     <string name="splash_type_transparent_desc">Shows your wallpaper</string>
-    <string name="configuration_app_monet_toast">Swipe for more options</string>
-    <string name="bottom_sheet_monet_color_picker_title">Wallpaper Color Picker</string>
-    <string name="color_picker_unavailable">Wallpaper Color Picker unavailable for the currently selected wallpaper</string>
-    <string name="error_no_xposed_title">Xposed Not Installed</string>
-    <string name="error_no_xposed_desc">Discover Killer requires Xposed to work. You must install Xposed to continue.\n\nNote: If you <b>do</b> have Xposed installed but are using Xposed Hide, you must enable the Discover Killer module for both this app and the Google app to continue.</string>
-    <string name="error_hooking_fail_title">Xposed Module Not Enabled</string>
-    <string name="error_hooking_fail_desc">You must enable the Discover Killer Xposed module for this app and the Google app in your Xposed manager to continue</string>
-    <string name="item_configuration_about_subtitle">Version v%1s\nCreated by Kieron Quinn / Quinny899 @ XDA</string>
+
+    <string name="overlay_title_rss">RSS Feed</string>
+    <string name="overlay_type_rss">Displays an RSS feed of your choice</string>
+    <string name="overlay_rss_loading">Loading…</string>
+    <string name="overlay_rss_error_unset">No feed set, tap to configure</string>
+    <string name="overlay_rss_error_empty">No articles, tap to reload</string>
+    <string name="overlay_rss_error_failed">Failed to fetch articles, tap to retry</string>
+
+    <string name="app_launch_failed">Failed to launch app</string>
+    <string name="app_launch_not_set">No app set to launch</string>
+
+    <string name="rss_configure_url_title">Feed URL</string>
+    <string name="rss_configure_url_content_unset">Not Set</string>
+    <string name="rss_configure_title_title">Feed Title</string>
+    <string name="rss_configure_title_content_unset">[Unset]</string>
+    <string name="rss_configure_title_content_disabled">Cannot show a title while showing the RSS logo, clear the logo URL to use a title</string>
+    <string name="rss_configure_logo_title">Feed Logo</string>
+    <string name="rss_configure_logo_content_unset">[Unset]</string>
+    <string name="rss_configure_enter_url">Enter a URL</string>
+    <string name="rss_configure_clear">Clear</string>
+
     <string name="menu_restart_overlay">Restart Overlay</string>
+    <string name="toast_restart_overlay">Overlay restarted</string>
+    <string name="menu_wallpaper_colour_picker">Wallpaper Colour Picker</string>
+    <string name="wallpaper_colour_picker_title">Wallpaper Colour</string>
+    <string name="color_picker_unavailable">Wallpaper Colour Picker unavailable for the currently selected wallpaper</string>
+
+    <!-- Update downloader -->
+    <string name="snackbar_update">Update available</string>
+    <string name="snackbar_update_button">Update</string>
+    <string name="updates_download_heading">%1s version %1s</string>
+    <string name="updates_download_subheading">Current version %1s</string>
+    <string name="updates_download_changes">Changes</string>
+    <string name="updates_download_open_installer">Start Install</string>
+    <string name="updates_download_done">Download Complete</string>
+    <string name="updates_download_loading">Loading…</string>
+    <string name="updates_download_failed">Download Failed</string>
+    <string name="updates_download_fab">Download</string>
+    <string name="download_manager_description">Downloading update…</string>
+    <string name="update_downloader_downloading_title">Downloading update…</string>
+    <string name="update_downloader_downloading_failed">Download failed</string>
+    <string name="update_downloader_github">Download via browser</string>
+    <string name="settings_background_picker_apply">Apply</string>
+
+    <string name="configuration_app_monet">Overlay Background</string>
+    <string name="configuration_app_monet_desc">Set which background to use for the overlay when swiping</string>
+    <string name="configuration_app_monet_toast">Swipe for more options</string>
+
+    <string name="notification_channel_updates_title">Updates</string>
+    <string name="notification_channel_updates_subtitle">Notifications shown when an update is available for Discover Killer</string>
+    <string name="notification_update_title">@string/app_name</string>
+    <string name="notification_update_subtitle">An update is available for Discover Killer</string>
+
+    <string name="error_hooking_fail_title">Xposed Module Not Enabled</string>
+    <string name="error_hooking_fail_desc">You must enable the Discover Killer Xposed module in your Xposed manager to continue\n<b>Note</b>: If you are still seeing this message after enabling the hook for the Google App, force stop the Google App and retry</string>
+    <string name="error_no_root_title">No Root</string>
+    <string name="error_no_root_desc">Discover Killer requires root to work, make sure your device is rooted and you have granted root</string>
+    <string name="error_retry">Retry</string>
+
     <string name="xda_thread">XDA Thread</string>
     <string name="github">GitHub</string>
     <string name="libraries">Third party libraries</string>
     <string name="donate">Donate</string>
     <string name="twitter">Follow me on Twitter</string>
-    <string name="error_retry">Retry</string>
-    <string name="bottom_sheet_dump_logs_title">Dump Overlay Logs</string>
-    <string name="bottom_sheet_dump_logs_continue">Continue</string>
-    <string name="bottom_sheet_dump_logs_content">This will save some of the logs related to the overlay, if they exist. You must choose a location to save to. If asked, please attach the log file to your XDA reply or GitHub issue.</string>
-    <string name="bottom_sheet_dump_logs_result_success">Dump complete</string>
-    <string name="bottom_sheet_dump_logs_result_failed">Dump failed</string>
-    <string name="bottom_sheet_error_ignore_title">Warning</string>
-    <string name="bottom_sheet_error_ignore_content">Discover Killer will <b>not</b> work without a working Xposed installation. You can skip the checks at your own risk, but please do not report issues related to the overlay not working if your Xposed installation is non-functional.</string>
-    <string name="bottom_sheet_error_ignore_continue">Continue</string>
-    <string name="bottom_sheet_error_ignore_checkbox">I understand</string>
-    <string name="error_ignore">Ignore</string>
+    <string name="about_version">Version %1s\nCreated by Kieron Quinn</string>
+    <string name="about_contributors">Contributors</string>
+
+    <string name="about_contributors_icons">Icons</string>
+    <string name="about_contributors_icons_content"><![CDATA[Icons by <b><a href="https://material.io/resources/icons">Material Icons</a></b> (<a href="https://www.apache.org/licenses/LICENSE-2.0.html">Apache Licence 2.0</a>)]]></string>
+    <string name="about_translators">Translators</string>
+
 </resources>

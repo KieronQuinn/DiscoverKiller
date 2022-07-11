@@ -1,50 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
 <resources>
-
-    <style name="AppTheme.Splash" parent="Theme.SplashScreen">
-        <item name="windowSplashScreenBackground">@color/splash_screen_background</item>
-        <item name="windowSplashScreenAnimatedIcon">@drawable/avd_launcher_foreground_animated</item>
-        <item name="windowSplashScreenAnimationDuration">1000</item>
-        <item name="postSplashScreenTheme">@style/AppTheme</item>
+    <style name="CollapsingToolbarTitle.Collapsed" parent="@android:style/TextAppearance.DeviceDefault.Widget.ActionBar.Title">
+        <item name="android:textSize">20dp</item>
     </style>
 
-    <!-- Base application theme. -->
-    <style name="AppTheme" parent="Theme.MaterialComponents.DayNight.NoActionBar">
-        <!-- Customize your theme here. -->
-        <item name="colorPrimary">@color/colorPrimary</item>
-        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
-        <item name="colorAccent">@color/colorAccent</item>
-        <item name="android:statusBarColor">@android:color/transparent</item>
-        <item name="android:navigationBarColor">@android:color/transparent</item>
-        <item name="searchBoxBackground">@color/search_box_background</item>
-        <item name="android:windowShowWallpaper">true</item>
-        <item name="actionOverflowMenuStyle">@style/DarqOverflowMenu</item>
-        <item name="textAppearanceLargePopupMenu">@style/AppTheme.TextAppearance.Popup</item>
+    <style name="CollapsingToolbarTitle.Expanded" parent="CollapsingToolbarTitle.Collapsed">
+        <item name="android:textSize">36dp</item>
     </style>
 
-    <style name="ToolbarTitle" parent="@style/TextAppearance.AppCompat.Widget.ActionBar.Title">
-        <item name="android:fontFamily">@font/google_sans_text_medium</item>
+    <style name="AppTheme.TextAppearance.Popup" parent="TextAppearance.AppCompat.Widget.TextView.SpinnerItem">
+        <item name="fontFamily">@font/google_sans_text</item>
+    </style>
+
+    <style name="DiscoverKillerOverflowMenu" parent="@style/Widget.MaterialComponents.PopupMenu.Overflow">
+        <item name="android:popupBackground">@drawable/background_menu</item>
     </style>
 
     <style name="TextAppearance.AppCompat.Small.DiscoverKiller" parent="TextAppearance.AppCompat.Small">
         <item name="android:fontFamily">@font/google_sans_text</item>
     </style>
 
-    <style name="TextAppearance.AppCompat.Small.DiscoverKiller.Bold" parent="TextAppearance.AppCompat.Small">
+    <style name="TextAppearance.AppCompat.Small.DiscoverKiller.Medium" parent="TextAppearance.AppCompat.Small">
+        <item name="android:fontFamily">@font/google_sans_text</item>
+        <item name="android:textFontWeight">500</item>
+    </style>
+
+    <style name="TextAppearance.AppCompat.Small.DiscoverKiller.Medium.Forced" parent="TextAppearance.AppCompat.Small">
         <item name="android:fontFamily">@font/google_sans_text_medium</item>
     </style>
 
     <style name="TextAppearance.AppCompat.Medium.DiscoverKiller" parent="TextAppearance.AppCompat.Medium">
         <item name="android:fontFamily">@font/google_sans_text</item>
+        <item name="android:textFontWeight">500</item>
     </style>
 
-    <style name="TextAppearance.AppCompat.Medium.DiscoverKiller.Bold" parent="TextAppearance.AppCompat.Medium">
+    <style name="TextAppearance.AppCompat.Medium.DiscoverKiller.Lighter" parent="TextAppearance.AppCompat.Medium">
         <item name="android:fontFamily">@font/google_sans_text</item>
-        <item name="android:textFontWeight">500</item>
     </style>
 
     <style name="TextAppearance.AppCompat.Large.DiscoverKiller" parent="TextAppearance.AppCompat.Large">
         <item name="android:fontFamily">@font/google_sans_text</item>
         <item name="android:textFontWeight">500</item>
+    </style>
+
+    <style name="TextAppearance.AppCompat.Large.DiscoverKiller.Lighter" parent="TextAppearance.AppCompat.Large.DiscoverKiller">
+        <item name="android:textFontWeight">400</item>
+    </style>
+
+    <style name="TextAppearance.AppCompat.ExtraLarge.DiscoverKiller" parent="TextAppearance.AppCompat.Large">
+        <item name="android:fontFamily">@font/google_sans_text_medium</item>
+        <item name="android:textSize">32sp</item>
     </style>
 
     <style name="TextAppearance.Tabs" parent="TextAppearance.AppCompat.Small.DiscoverKiller">
@@ -75,27 +80,29 @@
         <item name="android:background">@drawable/bottom_sheet_rounded_bg_dark</item>
     </style>
 
-
-    <style name="AppTheme.ThirdPartyLicences" parent="Theme.MaterialComponents.DayNight">
-        <item name="actionBarStyle">@style/ThirdPartyLicencesToolbarTheme</item>
-        <item name="android:statusBarColor">?android:windowBackground</item>
-        <item name="android:windowLightStatusBar">@bool/lightStatusNav</item>
-        <item name="android:textViewStyle">@style/ThirdPartyLicencesTextViewStyle</item>
-        <item name="colorPrimary">@color/colorPrimary</item>
-        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
-        <item name="colorAccent">@color/colorAccent</item>
+    <style name="Widget.Material3.CardView.Filled.DiscoverKiller" parent="Widget.Material3.CardView.Filled">
+        <item name="cardCornerRadius">16dp</item>
+        <item name="cardBackgroundColor">?android:colorControlHighlight</item>
     </style>
 
-    <style name="AppTheme.TextAppearance.Popup" parent="TextAppearance.AppCompat.Widget.TextView.SpinnerItem">
-        <item name="fontFamily">@font/google_sans_text</item>
+    <style name="ToolbarTitle" parent="@style/TextAppearance.AppCompat.Widget.ActionBar.Title">
+        <item name="android:fontFamily">@font/google_sans_text_medium</item>
     </style>
 
-    <style name="DarqOverflowMenu" parent="@style/Widget.MaterialComponents.PopupMenu.Overflow">
-        <item name="android:popupBackground">@drawable/background_menu</item>
+    <style name="Widget.Material3.Chip.Icon.DiscoverKiller" parent="@style/Widget.Material3.Chip.Assist">
+        <item name="chipIconVisible">true</item>
+        <item name="chipStrokeColor">@android:color/transparent</item>
+    </style>
+
+    <style name="ThirdPartyLicencesActivityAnimation" parent="@android:style/Animation.Activity">
+        <item name="android:activityOpenEnterAnimation">@anim/slide_in_right</item>
+        <item name="android:activityOpenExitAnimation">@anim/slide_out_left</item>
+        <item name="android:activityCloseEnterAnimation">@anim/slide_in_left</item>
+        <item name="android:activityCloseExitAnimation">@anim/slide_out_right</item>
     </style>
 
     <style name="ThirdPartyLicencesToolbarTheme" parent="@style/Widget.AppCompat.Light.ActionBar.Solid">
-        <item name="background">?android:windowBackground</item>
+        <item name="background">@color/licenses_toolbar</item>
         <item name="titleTextStyle">@style/ThirdPartyLicencesToolbarTitleStyle</item>
         <item name="colorControlNormal">@android:color/black</item>
         <item name="homeAsUpIndicator">@drawable/ic_back</item>

@@ -1,0 +1,145 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <FrameLayout
+        android:id="@+id/rss_toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/rss_toolbar_height"
+        android:animateLayoutChanges="true"
+        android:elevation="8dp">
+
+        <View
+            android:id="@+id/rss_toolbar_background"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+
+        <LinearLayout
+            android:id="@+id/rss_toolbar_inner"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:animateLayoutChanges="false"
+            android:elevation="16dp"
+            android:orientation="horizontal">
+
+            <ImageButton
+                android:id="@+id/rss_configure"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_gravity="center_vertical"
+                android:layout_marginStart="@dimen/padding_8"
+                android:background="@drawable/rounded_ripple"
+                android:padding="8dp"
+                android:scaleType="centerCrop"
+                android:src="@drawable/ic_rss_configure" />
+
+            <FrameLayout
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1">
+
+                <TextView
+                    android:id="@+id/rss_title"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginStart="@dimen/padding_8"
+                    android:layout_marginEnd="@dimen/padding_8"
+                    android:gravity="center"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Medium.DiscoverKiller"
+                    android:textColor="?android:textColorPrimary"
+                    android:visibility="gone"
+                    tools:text="@string/app_name" />
+
+                <ImageView
+                    android:id="@+id/rss_logo"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginStart="@dimen/padding_8"
+                    android:layout_marginEnd="@dimen/padding_8"
+                    android:adjustViewBounds="true"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Medium.DiscoverKiller"
+                    android:textColor="?android:textColorPrimary"
+                    android:visibility="gone"
+                    tools:src="@drawable/ic_launcher_foreground" />
+
+            </FrameLayout>
+
+            <ImageButton
+                android:id="@+id/rss_refresh"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_gravity="center_vertical"
+                android:layout_marginEnd="@dimen/padding_8"
+                android:background="@drawable/rounded_ripple"
+                android:padding="8dp"
+                android:scaleType="centerCrop"
+                android:src="@drawable/ic_rss_refresh" />
+
+        </LinearLayout>
+
+    </FrameLayout>
+
+    <ListView
+        android:id="@+id/rss_list"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:clipToPadding="false"
+        android:divider="@android:color/transparent"
+        android:paddingTop="@dimen/rss_toolbar_height"
+        android:paddingBottom="@dimen/padding_16"
+        tools:listitem="@layout/item_rss" />
+
+    <LinearLayout
+        android:id="@+id/rss_loading"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_gravity="center"
+        android:gravity="center"
+        android:orientation="vertical">
+
+        <ProgressBar
+            android:id="@+id/rss_loading_progress"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+        <TextView
+            android:id="@+id/rss_loading_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/padding_8"
+            android:text="@string/loading"
+            android:textAppearance="@style/TextAppearance.AppCompat.Medium.DiscoverKiller"
+            android:textColor="?android:textColorPrimary" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/rss_error"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_gravity="center"
+        android:clickable="true"
+        android:focusable="true"
+        android:gravity="center"
+        android:orientation="vertical">
+
+        <ImageView
+            android:id="@+id/rss_error_icon"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            tools:src="@drawable/ic_rss_placeholder" />
+
+        <TextView
+            android:id="@+id/rss_error_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/padding_8"
+            android:textAppearance="@style/TextAppearance.AppCompat.Medium.DiscoverKiller"
+            android:textColor="?android:textColorPrimary"
+            tools:text="Error" />
+
+    </LinearLayout>
+
+</FrameLayout>
