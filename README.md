@@ -9,7 +9,7 @@ Discover Killer is an Xposed module that allows you to replace the Google Discov
 ![Replacing with an RSS feed](https://i.imgur.com/UMsSUSE.gif "Replacing with an RSS feed")
 ![Replacing with the BBC news app](https://i.imgur.com/BVDCSG5.gif "Replacing with the BBC news app")
 
-(Replacing the page with Assistant 'Updates', and replacing it to launch the BBC News app)
+(Replacing the page with Entertainment Space, an RSS feed and launching the BBC News app)
 
 ## Configuration:
 [![Configuration page](https://i.imgur.com/50ZZmD9l.png "Configuration page")](https://i.imgur.com/50ZZmD9.png)
