@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_graph_main"
+    app:startDestination="@id/settingsFragment">
+
+    <fragment
+        android:id="@+id/settingsFragment"
+        android:name="com.kieronquinn.app.discoverkiller.ui.screens.settings.SettingsFragment"
+        android:label="@string/app_name"
+        tools:layout="@layout/fragment_settings_base" >
+        <action
+            android:id="@+id/action_settingsFragment_to_overlayPickerFragment"
+            app:destination="@id/overlayPickerFragment" />
+        <action
+            android:id="@+id/action_settingsFragment_to_appPickerFragment"
+            app:destination="@id/appPickerFragment" />
+        <action
+            android:id="@+id/action_settingsFragment_to_wallpaperColourPickerBottomSheetFragment"
+            app:destination="@id/wallpaperColourPickerBottomSheetFragment" />
+        <action
+            android:id="@+id/action_settingsFragment_to_updateFragment"
+            app:destination="@id/updateFragment" />
+        <action
+            android:id="@+id/action_settingsFragment_to_settingsBackgroundPickerActivity"
+            app:destination="@id/settingsBackgroundPickerActivity" />
+        <action
+            android:id="@+id/action_settingsFragment_to_contributorsFragment"
+            app:destination="@id/contributorsFragment" />
+        <action
+            android:id="@+id/action_settingsFragment_to_ossLicensesMenuActivity"
+            app:destination="@id/ossLicensesMenuActivity" />
+    </fragment>
+    <fragment
+        android:id="@+id/overlayPickerFragment"
+        android:name="com.kieronquinn.app.discoverkiller.ui.screens.overlaypicker.OverlayPickerFragment"
+        android:label="@string/settings_overlay_picker"
+        tools:layout="@layout/fragment_overlay_picker" />
+    <fragment
+        android:id="@+id/appPickerFragment"
+        android:name="com.kieronquinn.app.discoverkiller.ui.screens.apppicker.AppPickerFragment"
+        android:label="@string/settings_app_picker"
+        tools:layout="@layout/fragment_app_picker"/>
+    <dialog
+        android:id="@+id/wallpaperColourPickerBottomSheetFragment"
+        android:name="com.kieronquinn.app.discoverkiller.ui.screens.wallpapercolourpicker.WallpaperColourPickerBottomSheetFragment"
+        android:label=" "
+        tools:layout="@layout/fragment_wallpaper_color_picker_bottom_sheet"/>
+    <fragment
+        android:id="@+id/updateFragment"
+        android:name="com.kieronquinn.app.discoverkiller.ui.screens.update.UpdateFragment"
+        android:label="@string/snackbar_update_button"
+        tools:layout="@layout/fragment_update" >
+        <argument
+            android:name="release"
+            app:argType="com.kieronquinn.app.discoverkiller.model.update.Release" />
+    </fragment>
+    <activity
+        android:id="@+id/settingsBackgroundPickerActivity"
+        android:name="com.kieronquinn.app.discoverkiller.ui.activities.SettingsBackgroundPickerActivity"
+        android:label=" "
+        tools:layout="@layout/activity_settings_background_picker" />
+    <fragment
+        android:id="@+id/contributorsFragment"
+        android:name="com.kieronquinn.app.discoverkiller.ui.screens.contributors.ContributorsFragment"
+        android:label="@string/about_contributors"
+        tools:layout="@layout/fragment_settings_base" />
+    <activity
+        android:id="@+id/ossLicensesMenuActivity"
+        android:name="com.google.android.gms.oss.licenses.OssLicensesMenuActivity"
+        tools:layout="@layout/libraries_social_licenses_license_menu_activity" />
+
+</navigation>

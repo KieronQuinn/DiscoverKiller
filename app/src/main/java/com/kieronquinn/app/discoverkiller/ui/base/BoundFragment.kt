@@ -1,24 +1,34 @@
 package com.kieronquinn.app.discoverkiller.ui.base
 
-import android.annotation.SuppressLint
+import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.animation.AnimationUtils
 import androidx.viewbinding.ViewBinding
-import com.kieronquinn.app.discoverkiller.components.navigation.Navigation
+import com.google.android.material.transition.FadeThroughProvider
+import com.google.android.material.transition.MaterialSharedAxis
+import com.google.android.material.transition.SlideDistanceProvider
+import com.kieronquinn.app.discoverkiller.R
 import com.kieronquinn.monetcompat.app.MonetFragment
-import org.koin.android.ext.android.inject
+import java.lang.NullPointerException
+import kotlin.math.roundToInt
 
-//Seems to be a lint bug
-@SuppressLint("MissingSuperCall")
-abstract class BoundFragment<T : ViewBinding>(private val inflate: (LayoutInflater, ViewGroup?, Boolean) -> T) : MonetFragment() {
+abstract class BoundFragment<V: ViewBinding>(private val inflate: (LayoutInflater, ViewGroup?, Boolean) -> V): MonetFragment() {
 
-    private var _binding: T? = null
-    internal val binding
-        get() = _binding ?: throw NullPointerException("Binding cannot be accessed before onCreateView or after onDestroyView")
+    private var _binding: V? = null
 
-    internal val navigation by inject<Navigation>()
+    protected val binding: V
+        get() = _binding ?: throw NullPointerException("Unable to access binding before onCreateView or after onDestroyView")
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        exitTransition = getMaterialSharedAxis(requireContext(), true)
+        enterTransition = getMaterialSharedAxis(requireContext(), true)
+        returnTransition = getMaterialSharedAxis(requireContext(), false)
+        reenterTransition = getMaterialSharedAxis(requireContext(), false)
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -26,13 +36,23 @@ abstract class BoundFragment<T : ViewBinding>(private val inflate: (LayoutInflat
         savedInstanceState: Bundle?
     ): View? {
         super.onCreateView(inflater, container, savedInstanceState)
-        _binding = inflate.invoke(inflater, container, false)
+        _binding = inflate(layoutInflater, container, false)
         return binding.root
     }
 
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
+    }
+
+    private fun getMaterialSharedAxis(context: Context, forward: Boolean): MaterialSharedAxis {
+        return MaterialSharedAxis(MaterialSharedAxis.X, forward).apply {
+            (primaryAnimatorProvider as SlideDistanceProvider).slideDistance =
+                context.resources.getDimension(R.dimen.shared_axis_x_slide_distance).roundToInt()
+            duration = 450L
+            (secondaryAnimatorProvider as FadeThroughProvider).progressThreshold = 0.22f
+            interpolator = AnimationUtils.loadInterpolator(context, R.anim.fast_out_extra_slow_in)
+        }
     }
 
 }

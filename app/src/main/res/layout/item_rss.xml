@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/item_rss_item"
+        android:layout_marginStart="@dimen/padding_16"
+        android:layout_marginTop="4dp"
+        android:layout_marginEnd="@dimen/padding_16"
+        android:layout_marginBottom="4dp"
+        android:background="@drawable/background_rss_item"
+        android:orientation="horizontal"
+        android:padding="@dimen/padding_16">
+
+        <ImageView
+            android:id="@+id/item_rss_image"
+            android:layout_width="@dimen/rss_image_size"
+            android:layout_height="@dimen/rss_image_size"
+            android:layout_gravity="center_vertical"
+            android:background="@drawable/background_rss_image"
+            android:clipToOutline="true"
+            android:outlineProvider="background"
+            android:src="@drawable/ic_rss_placeholder" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_marginStart="@dimen/padding_16"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/item_rss_title"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:ellipsize="end"
+                android:maxLines="2"
+                android:textAppearance="@style/TextAppearance.AppCompat.Small.DiscoverKiller.Medium"
+                android:textColor="?android:textColorPrimary"
+                tools:text="News Article with a very long title, so long it spans multiple lines" />
+
+            <TextView
+                android:id="@+id/item_rss_content"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:ellipsize="end"
+                android:maxLines="4"
+                android:textAppearance="@style/TextAppearance.AppCompat.Small.DiscoverKiller"
+                android:textColor="?android:textColorPrimary"
+                tools:text="News Article with a very long title, so long it spans multiple lines\nNews Article with a very long title, so long it spans multiple lines" />
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+</FrameLayout>

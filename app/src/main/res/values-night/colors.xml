@@ -1,5 +1,4 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="search_box_background">#757575</color>
-    <color name="splash_screen_background">@android:color/black</color>
+    <color name="splash_background">@color/black</color>
 </resources>

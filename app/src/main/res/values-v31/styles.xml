@@ -1,8 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<resources>
-    <style name="AppTheme.Splash" parent="AppTheme">
-        <item name="android:windowSplashScreenAnimatedIcon">@drawable/avd_launcher_foreground_animated</item>
-        <item name="android:windowSplashScreenAnimationDuration">1000</item>
-        <item name="android:windowSplashScreenBackground">@color/splash_screen_background</item>
-    </style>
-</resources>

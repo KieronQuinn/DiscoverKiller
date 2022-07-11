@@ -1,0 +1,38 @@
+<resources xmlns:tools="http://schemas.android.com/tools">
+    <style name="Theme.DiscoverKiller.Splash" parent="Theme.SplashScreen.IconBackground">
+        <item name="windowSplashScreenAnimatedIcon">@drawable/avd_splash</item>
+        <item name="windowSplashScreenAnimationDuration">1000</item>
+        <item name="windowSplashScreenIconBackgroundColor">@color/icon_background</item>
+        <item name="textAppearanceLargePopupMenu">@style/AppTheme.TextAppearance.Popup</item>
+        <item name="postSplashScreenTheme">@style/Theme.DiscoverKiller</item>
+    </style>
+
+    <style name="Theme.DiscoverKiller" parent="Theme.Material3.DayNight.NoActionBar">
+        <item name="android:navigationBarColor">@android:color/transparent</item>
+        <item name="android:statusBarColor">@android:color/transparent</item>
+        <item name="android:windowLightStatusBar">@bool/lightStatusNav</item>
+        <item name="android:windowLightNavigationBar">@bool/lightStatusNav</item>
+        <item name="android:overScrollMode">@integer/overscroll_enabled</item>
+        <item name="actionOverflowMenuStyle">@style/DiscoverKillerOverflowMenu</item>
+    </style>
+
+    <style name="Theme.DiscoverKiller.Wallpaper" parent="Theme.DiscoverKiller">
+        <item name="android:windowBackground">@android:color/transparent</item>
+        <item name="android:colorBackgroundCacheHint">@null</item>
+        <item name="android:windowShowWallpaper">true</item>
+    </style>
+
+    <style name="AppTheme.ThirdPartyLicences" parent="Theme.MaterialComponents.DayNight">
+        <item name="actionBarStyle">@style/ThirdPartyLicencesToolbarTheme</item>
+        <item name="android:windowBackground">@color/licenses_background</item>
+        <item name="android:statusBarColor">@color/licenses_background</item>
+        <item name="android:navigationBarColor">@color/licenses_background</item>
+        <item name="android:windowLightStatusBar">@bool/lightStatusNav</item>
+        <item name="android:windowLightNavigationBar" tools:ignore="NewApi">@bool/lightStatusNav</item>
+        <item name="android:textViewStyle">@style/ThirdPartyLicencesTextViewStyle</item>
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/colorPrimary</item>
+        <item name="colorAccent">@color/colorAccent</item>
+        <item name="android:windowAnimationStyle">@style/ThirdPartyLicencesActivityAnimation</item>
+    </style>
+</resources>

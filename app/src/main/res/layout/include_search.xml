@@ -40,6 +40,6 @@
         tools:visibility="visible"
         android:foreground="@drawable/rounded_ripple_36"
         android:padding="@dimen/padding_8"
-        android:src="@drawable/ic_close" />
+        android:src="@drawable/ic_search_clear" />
 
 </FrameLayout>

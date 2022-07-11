@@ -31,7 +31,7 @@
         android:layout_height="0dp"
         android:adjustViewBounds="true"
         android:layout_weight="0.075"
-        tools:src="@drawable/ic_twitter" />
+        tools:src="@drawable/ic_back" />
 
     <Space
         android:layout_width="match_parent"

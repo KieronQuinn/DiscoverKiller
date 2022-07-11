@@ -1,70 +1,78 @@
 package com.kieronquinn.app.discoverkiller.utils.extensions
 
+import android.util.TypedValue
 import android.view.View
-import android.view.animation.Animation
-import android.view.animation.AnimationUtils
-import androidx.core.view.ViewCompat
-import androidx.core.view.WindowInsetsCompat
-import androidx.core.view.isVisible
-import com.kieronquinn.app.discoverkiller.R
-import android.content.ContextWrapper
-
-import android.app.Activity
-import android.content.Context
-import android.util.Log
-import android.view.Window
+import android.view.ViewTreeObserver
+import android.view.WindowManager
 import androidx.core.view.doOnPreDraw
-import com.kieronquinn.app.discoverkiller.components.xposed.apps.GoogleApp
-import com.kieronquinn.app.discoverkiller.utils.OverlayContext
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.coroutineScope
+import kotlinx.coroutines.channels.awaitClose
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.callbackFlow
+import kotlinx.coroutines.flow.debounce
+import kotlinx.coroutines.suspendCancellableCoroutine
+import kotlin.coroutines.resume
 
-/**
- *  Provide a block to run when window insets change. [reApplyNow] = `true` will trigger the block
- *  immediately with root window insets, if they exist.
- */
-fun View.onApplyInsets(reApplyNow: Boolean = false, doOnApply: (View, WindowInsetsCompat) -> Unit) {
-    ViewCompat.setOnApplyWindowInsetsListener(this){ view, insets ->
-        doOnApply.invoke(view, insets)
-        insets
-    }
-    if(reApplyNow){
-        ViewCompat.getRootWindowInsets(this)?.let {
-            doOnApply.invoke(this, it)
+const val TAP_DEBOUNCE = 250L
+
+suspend fun View.awaitPost() = suspendCancellableCoroutine<View> {
+    post {
+        if(isAttachedToWindow){
+            it.resume(this)
+        }else{
+            it.cancel()
         }
     }
 }
 
-fun View.slideOut(callback: () -> Unit): Animation {
-    AnimationUtils.loadAnimation(context, R.anim.slide_out_bottom).apply {
-        onEnd {
-            isVisible = false
-            callback.invoke()
+fun View.onClicked() = callbackFlow {
+    setOnClickListener {
+        trySend(it)
+    }
+    awaitClose {
+        setOnClickListener(null)
+    }
+}.debounce(TAP_DEBOUNCE)
+
+fun View.addRipple() = with(TypedValue()) {
+    context.theme.resolveAttribute(android.R.attr.selectableItemBackground, this, true)
+    setBackgroundResource(resourceId)
+}
+
+fun View.removeRipple() {
+    setBackgroundResource(0)
+}
+
+fun View.delayPreDrawUntilFlow(flow: Flow<Boolean>, lifecycle: Lifecycle) {
+    val listener = ViewTreeObserver.OnPreDrawListener {
+        false
+    }
+    val removeListener = {
+        if (viewTreeObserver.isAlive) {
+            viewTreeObserver.removeOnPreDrawListener(listener)
         }
-    }.also {
-        startAnimation(it)
-        return it
+    }
+    lifecycle.runOnDestroy {
+        removeListener()
+    }
+    viewTreeObserver.addOnPreDrawListener(listener)
+    lifecycle.coroutineScope.launchWhenResumed {
+        flow.collect {
+            removeListener()
+        }
     }
 }
 
-fun View.slideIn(callback: () -> Unit): Animation {
-    isVisible = true
-    AnimationUtils.loadAnimation(context, R.anim.slide_in_bottom).apply {
-        onEnd {
-            callback.invoke()
-        }
-    }.also {
-        startAnimation(it)
-        return it
-    }
-}
 
-fun Animation.onEnd(callback: () -> Unit){
-    setAnimationListener(object: Animation.AnimationListener {
-        override fun onAnimationRepeat(animation: Animation?) {}
-        override fun onAnimationStart(animation: Animation?) {}
-        override fun onAnimationEnd(animation: Animation?) {
-            callback.invoke()
-        }
-    })
+fun View.measureSize(windowManager: WindowManager): Pair<Int, Int> {
+    val display = windowManager.defaultDisplay
+    val height = display.height
+    val width = display.width
+    val heightSpec = View.MeasureSpec.makeMeasureSpec(height, View.MeasureSpec.AT_MOST)
+    val widthSpec = View.MeasureSpec.makeMeasureSpec(width, View.MeasureSpec.AT_MOST)
+    measure(widthSpec, heightSpec)
+    return Pair(measuredWidth, measuredHeight)
 }
 
 /**
@@ -85,31 +93,3 @@ fun View.removeStatusNavBackgroundOnPreDraw() = apply {
         }
     }
 }
-
-/**
- *  Runs a given [block] if the view ID is in [idStrings] and it is attached to the
- *  Discover Killer activity.
- */
-fun View.runAfterPostIfIdMatches(flag: () -> Boolean, vararg idStrings: String, block: (View) -> Unit){
-    val ids = idStrings.map {
-        context.resources.getIdentifier(it, "id", context.packageName)
-    }.filter { it != 0x0 }
-    post {
-        if(!flag()) return@post
-        if(!isAttachedToWindow) return@post
-        if(!ids.contains(id)) return@post
-        block.invoke(this)
-    }
-}
-
-val View.activity: Activity?
-    get() {
-        var context = context
-        while (context is ContextWrapper) {
-            if (context is Activity) {
-                return context
-            }
-            context = context.baseContext
-        }
-        return null
-    }

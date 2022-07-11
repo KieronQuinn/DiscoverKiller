@@ -5,20 +5,23 @@
 
     <uses-permission android:name="android.permission.QUERY_ALL_PACKAGES"
         tools:ignore="QueryAllPackagesPermission" />
+    <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-permission android:name="android.permission.REQUEST_INSTALL_PACKAGES"/>
+    <uses-permission android:name="android.permission.POST_NOTIFICATIONS"/>
 
-    <!-- Debuggable required for overlay -->
     <application
-        android:allowBackup="true"
+        android:allowBackup="false"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:name=".DiscoverKiller"
-        android:theme="@style/AppTheme.Splash"
-        android:debuggable="true"
-        tools:ignore="HardcodedDebugMode">
-        <activity android:name=".ui.activities.SettingsActivity"
-            android:screenOrientation="portrait"
+        android:usesCleartextTraffic="true"
+        android:theme="@style/Theme.DiscoverKiller.Splash"
+        tools:targetApi="31">
+
+        <activity
+            android:name=".ui.activities.MainActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -27,9 +30,91 @@
             </intent-filter>
         </activity>
 
+        <activity android:name=".ui.activities.RssConfigureActivity"
+            android:exported="true"/>
+
         <activity android:name=".ui.activities.SettingsBackgroundPickerActivity"
-            android:screenOrientation="portrait"
-            android:theme="@style/AppTheme"/>
+            android:theme="@style/Theme.DiscoverKiller.Wallpaper"/>
+
+        <!-- Discover Killer service for accessing root commands. Protected by a permission GSB has -->
+        <service android:name=".service.DiscoverKillerService"
+            android:permission="com.google.android.googlequicksearchbox.permission.FINISH_GEL_ACTIVITY"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="com.kieronquinn.app.discoverkiller.SERVICE"/>
+            </intent-filter>
+        </service>
+
+        <!-- Discover Killer RSS overlay. No permission - any launcher can use this -->
+        <service android:name=".service.OverlayRssService"
+            android:label="@string/overlay_title_rss"
+            android:exported="true"
+            android:icon="@drawable/ic_launcher_rss"
+            tools:ignore="ExportedService">
+            <intent-filter>
+                <action android:name="com.android.launcher3.WINDOW_OVERLAY" />
+                <data android:scheme="app" />
+            </intent-filter>
+
+            <meta-data
+                android:name="service.api.version"
+                android:value="7" />
+        </service>
+
+        <!-- Discover Killer Unset overlay. Protected by a permission GSB has -->
+        <service android:name=".service.OverlayUnsetService"
+            android:permission="com.google.android.googlequicksearchbox.permission.FINISH_GEL_ACTIVITY"
+            android:label="@string/overlay_unset"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="com.android.launcher3.WINDOW_OVERLAY" />
+                <data android:scheme="app" />
+            </intent-filter>
+
+            <meta-data
+                android:name="service.api.version"
+                android:value="7" />
+        </service>
+
+        <!-- Discover Killer App Launcher overlay. Protected by a permission GSB has -->
+        <service android:name=".service.OverlayAppLauncherService"
+            android:permission="com.google.android.googlequicksearchbox.permission.FINISH_GEL_ACTIVITY"
+            android:label="@string/overlay_app"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="com.android.launcher3.WINDOW_OVERLAY" />
+                <data android:scheme="app" />
+            </intent-filter>
+
+            <meta-data
+                android:name="service.api.version"
+                android:value="7" />
+        </service>
+
+        <!-- Settings provider for overlay settings. Protected by a permission GSB has -->
+        <provider
+            android:permission="com.google.android.googlequicksearchbox.permission.FINISH_GEL_ACTIVITY"
+            android:authorities="com.kieronquinn.app.discoverkiller.overlay_settings"
+            android:exported="true"
+            android:name=".providers.OverlaySettingsProvider"/>
+
+        <provider
+            android:name="androidx.core.content.FileProvider"
+            android:authorities="${applicationId}.provider"
+            android:exported="false"
+            android:grantUriPermissions="true">
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/provider_paths" />
+        </provider>
+
+        <activity
+            android:name="com.google.android.gms.oss.licenses.OssLicensesMenuActivity"
+            android:theme="@style/AppTheme.ThirdPartyLicences" />
+
+        <activity
+            android:name="com.google.android.gms.oss.licenses.OssLicensesActivity"
+            android:theme="@style/AppTheme.ThirdPartyLicences" />
 
         <meta-data
             android:name="xposedmodule"
@@ -43,21 +128,6 @@
         <meta-data
             android:name="xposedscope"
             android:resource="@array/scope"/>
-
-        <provider
-            android:name=".components.settings.RemoteSettingsProvider"
-            android:authorities="com.kieronquinn.app.discoverkiller.provider.remotesettings"
-            android:grantUriPermissions="true"
-            android:exported="true" />
-
-        <activity
-            android:name="com.google.android.gms.oss.licenses.OssLicensesMenuActivity"
-            android:theme="@style/AppTheme.ThirdPartyLicences" />
-
-        <activity
-            android:name="com.google.android.gms.oss.licenses.OssLicensesActivity"
-            android:theme="@style/AppTheme.ThirdPartyLicences" />
-
 
     </application>
 

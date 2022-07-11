@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_graph_root"
+    app:startDestination="@id/containerFragment">
+
+    <fragment
+        android:id="@+id/containerFragment"
+        android:name="com.kieronquinn.app.discoverkiller.ui.screens.container.ContainerFragment"
+        android:label="ContainerFragment"
+        tools:layout="@layout/fragment_container" />
+    <fragment
+        android:id="@+id/errorNoRootFragment"
+        android:name="com.kieronquinn.app.discoverkiller.ui.screens.noroot.ErrorNoRootFragment"
+        android:label="ErrorNoRootFragment"
+        tools:layout="@layout/fragment_error_no_root"/>
+    <fragment
+        android:id="@+id/errorNoXposedFragment"
+        android:name="com.kieronquinn.app.discoverkiller.ui.screens.noxposed.ErrorNoXposedFragment"
+        android:label="ErrorNoXposedFragment"
+        tools:layout="@layout/fragment_error_no_xposed"/>
+
+</navigation>

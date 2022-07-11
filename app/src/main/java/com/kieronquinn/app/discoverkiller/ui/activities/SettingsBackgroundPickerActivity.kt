@@ -4,14 +4,11 @@ import android.annotation.SuppressLint
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
-import android.view.Window
 import android.view.WindowManager
 import androidx.core.view.WindowCompat
 import androidx.core.view.WindowInsetsControllerCompat
-import androidx.navigation.ActivityNavigator
 import com.kieronquinn.app.discoverkiller.R
 import com.kieronquinn.app.discoverkiller.components.blur.BlurProvider
-import com.kieronquinn.app.discoverkiller.utils.TransitionUtils
 import com.kieronquinn.app.discoverkiller.utils.extensions.isDarkMode
 import com.kieronquinn.monetcompat.app.MonetCompatActivity
 import org.koin.android.ext.android.inject
@@ -19,10 +16,6 @@ import org.koin.android.ext.android.inject
 //Seems to be a lint bug
 @SuppressLint("MissingSuperCall")
 class SettingsBackgroundPickerActivity: MonetCompatActivity() {
-
-    companion object {
-        const val KEY_SELECTED_SPLASH_TYPE = "selected_splash_type"
-    }
 
     private val blurProvider by inject<BlurProvider>()
 
