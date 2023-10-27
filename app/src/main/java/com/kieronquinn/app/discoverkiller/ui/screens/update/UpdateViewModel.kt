@@ -132,6 +132,9 @@ class UpdateViewModelImpl(
                     state.emit(State.Done(it.outputUri))
                     startInstall()
                 }
+                else -> {
+                    //No-op
+                }
             }
         }
     }

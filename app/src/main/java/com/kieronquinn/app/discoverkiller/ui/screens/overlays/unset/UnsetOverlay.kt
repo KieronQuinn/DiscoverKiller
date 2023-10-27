@@ -77,7 +77,7 @@ class UnsetOverlay(context: Context): BaseOverlay<OverlayUnsetBinding>(context, 
         window?.decorView?.post {
             lifecycleScope.launchWhenResumed {
                 //Fix case where *two* status bar backgrounds sometimes appear
-                window.decorView.removeStatusNavBackgroundOnPreDraw()
+                window?.decorView?.removeStatusNavBackgroundOnPreDraw()
             }
         }
     }
