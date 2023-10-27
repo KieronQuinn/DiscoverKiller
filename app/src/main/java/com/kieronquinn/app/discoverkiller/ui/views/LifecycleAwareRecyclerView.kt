@@ -41,9 +41,8 @@ class LifecycleAwareRecyclerView : RecyclerView {
             handleLifecycleEvent(Lifecycle.Event.ON_CREATE)
         }
 
-        final override fun getLifecycle(): Lifecycle {
-            return lifecycleRegistry
-        }
+        override val lifecycle: Lifecycle
+            get() = lifecycleRegistry
 
         internal fun handleLifecycleEvent(event: Lifecycle.Event) {
             lifecycleRegistry.handleLifecycleEvent(event)

@@ -33,6 +33,8 @@ abstract class BaseOverlay<T: ViewBinding>(context: Context, private val viewBin
         get() = _binding ?: throw Exception("Cannot use binding before onCreate or after onDestroy")
     internal val optBinding: T?
         get() = _binding
+    override val lifecycle: Lifecycle
+        get() = lifecycleRegistry
 
     internal val remoteContext by lazy {
         context.createPackageContext(BuildConfig.APPLICATION_ID, Context.CONTEXT_IGNORE_SECURITY)
@@ -81,10 +83,6 @@ abstract class BaseOverlay<T: ViewBinding>(context: Context, private val viewBin
     override fun onStop() {
         super.onStop()
         lifecycleRegistry.handleLifecycleEvent(Lifecycle.Event.ON_STOP)
-    }
-
-    final override fun getLifecycle(): Lifecycle {
-        return lifecycleRegistry
     }
 
 }

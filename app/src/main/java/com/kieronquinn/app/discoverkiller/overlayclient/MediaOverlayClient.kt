@@ -15,7 +15,7 @@ import com.google.android.mediahome.launcheroverlay.aidl.ILauncherOverlayCallbac
 class MediaOverlayClient(
     private var original: ILauncherOverlay,
     private val slideAnimationDuration: Int,
-    private var _runWithOverlay: (BaseOverlayClient, (IMediaLauncherOverlay) -> Any) -> Any
+    private var _runWithOverlay: (BaseOverlayClient, (IMediaLauncherOverlay) -> Any) -> Any?
 ): BaseOverlayClient() {
 
     private val overlayState = OverlayState()
@@ -25,10 +25,10 @@ class MediaOverlayClient(
         private const val BUNDLE_KEY_ANIMATION_DURATION = "overlay_animation_duration"
     }
 
-    private fun <T> runWithOverlay(block: (IMediaLauncherOverlay) -> T): T {
+    private fun <T> runWithOverlay(block: (IMediaLauncherOverlay) -> T): T? {
         return _runWithOverlay(this) {
             block(it) as Any
-        } as T
+        } as? T
     }
 
     override fun startScroll() {
@@ -100,7 +100,7 @@ class MediaOverlayClient(
     }
 
     override fun hasOverlayContent(): Boolean {
-        return runWithOverlay { it.hasOverlayContent() }
+        return runWithOverlay { it.hasOverlayContent() } ?: true
     }
 
     override fun windowAttached2(bundle: Bundle?, cb: ILauncherOverlayCallback) {

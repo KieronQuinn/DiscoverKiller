@@ -11,15 +11,15 @@ import com.google.android.libraries.launcherclient.ILauncherOverlayCallback
 class OverlayClient(
     private var original: ILauncherOverlay,
     private val preferOriginal: Boolean,
-    private var _runWithOverlay: (BaseOverlayClient, (ILauncherOverlay) -> Any) -> Any
+    private var _runWithOverlay: (BaseOverlayClient, (ILauncherOverlay) -> Any) -> Any?
 ): BaseOverlayClient() {
 
     private val overlayState = OverlayState()
 
-    private fun <T> runWithOverlay(block: (ILauncherOverlay) -> T): T {
+    private fun <T> runWithOverlay(block: (ILauncherOverlay) -> T): T? {
         return _runWithOverlay(this) {
             block(it) as Any
-        } as T
+        } as? T
     }
 
     override fun startScroll() {
@@ -54,7 +54,7 @@ class OverlayClient(
             Log.d("DOS", "Setting layout params to $it")
             overlayState.params = it
         }
-        return runWithOverlay { it.windowAttached2(bundle, cb) }
+        runWithOverlay { it.windowAttached2(bundle, cb) }
     }
 
     override fun windowDetached(isChangingConfigurations: Boolean) {
@@ -95,7 +95,7 @@ class OverlayClient(
         return if(preferOriginal){
             original.voiceSearchLanguage
         }else{
-            runWithOverlay { it.voiceSearchLanguage }
+            runWithOverlay { it.voiceSearchLanguage } ?: ""
         }
     }
 
@@ -103,12 +103,12 @@ class OverlayClient(
         return if(preferOriginal){
             isVoiceDetectionRunning
         }else{
-            runWithOverlay { it.isVoiceDetectionRunning }
+            runWithOverlay { it.isVoiceDetectionRunning } ?: false
         }
     }
 
     override fun hasOverlayContent(): Boolean {
-        return runWithOverlay { it.hasOverlayContent() }
+        return runWithOverlay { it.hasOverlayContent() } ?: true
     }
 
     override fun unusedMethod() {
@@ -124,7 +124,7 @@ class OverlayClient(
         return if(preferOriginal){
             original.startSearch(data, bundle)
         }else{
-            runWithOverlay { it.startSearch(data, bundle) }
+            runWithOverlay { it.startSearch(data, bundle) } ?: false
         }
     }
 

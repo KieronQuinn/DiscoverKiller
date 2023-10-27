@@ -1,5 +1,8 @@
 package com.kieronquinn.app.discoverkiller.xposed.hooks
 
+import android.app.Notification
+import android.app.NotificationManager
+import android.app.PendingIntent
 import android.app.Service
 import android.content.ComponentName
 import android.content.Context
@@ -16,6 +19,10 @@ import android.view.WindowManager
 import com.google.android.libraries.launcherclient.ILauncherOverlay
 import com.google.android.libraries.launcherclient.ILauncherOverlayCallback
 import com.kieronquinn.app.discoverkiller.BuildConfig
+import com.kieronquinn.app.discoverkiller.R
+import com.kieronquinn.app.discoverkiller.components.notifications.NotificationChannel
+import com.kieronquinn.app.discoverkiller.components.notifications.NotificationId
+import com.kieronquinn.app.discoverkiller.components.notifications.createNotification
 import com.kieronquinn.app.discoverkiller.overlayclient.BaseOverlayClient
 import com.kieronquinn.app.discoverkiller.overlayclient.MediaOverlayClient
 import com.kieronquinn.app.discoverkiller.overlayclient.OverlayClient
@@ -24,6 +31,7 @@ import com.kieronquinn.app.discoverkiller.repositories.SettingsRepository.Overla
 import com.kieronquinn.app.discoverkiller.service.DiscoverKillerService
 import com.kieronquinn.app.discoverkiller.service.IDiscoverKiller
 import com.kieronquinn.app.discoverkiller.service.OverlayUnsetService
+import com.kieronquinn.app.discoverkiller.ui.activities.MainActivity
 import com.kieronquinn.app.discoverkiller.utils.extensions.*
 import com.kieronquinn.app.discoverkiller.xposed.BaseXposedHooks
 import com.kieronquinn.app.discoverkiller.xposed.Xposed
@@ -137,8 +145,10 @@ class GoogleAppDrawerOverlayServiceHooks(
         if(!settings.value.enabled){
             return@MethodHook MethodResult.Skip()
         }
-        serviceContext = thisObject as Context
+        val service = thisObject as Service
+        serviceContext = service
         shouldReconnect = true
+        Log.d("DOS", "onCreate")
         MethodResult.Skip<Unit>()
     }
 
@@ -148,6 +158,7 @@ class GoogleAppDrawerOverlayServiceHooks(
         }
         serviceContext = null
         shouldReconnect = false
+        Log.d("DOS", "onDestroy")
         MethodResult.Skip<Unit>()
     }
 
@@ -173,11 +184,11 @@ class GoogleAppDrawerOverlayServiceHooks(
         }
         val callingUid = intent.data!!.port
         tearDownClient(callingUid)
-        if(overlayClients.isEmpty()){
+        /*if(overlayClients.isEmpty()){
             unbindProxy()
             val service = thisObject as Service
             service.stopSelf()
-        }
+        }*/
         MethodResult.Skip<Boolean>()
     }
 
@@ -237,7 +248,7 @@ class GoogleAppDrawerOverlayServiceHooks(
     private fun <T> runWithService(
         overlayClient: BaseOverlayClient,
         block: (ILauncherOverlay) -> T
-    ): T {
+    ): T? {
         proxyService?.let {
             if(!it.ping()) return@let
             return block(it)
@@ -267,6 +278,7 @@ class GoogleAppDrawerOverlayServiceHooks(
             if(System.currentTimeMillis() - startTime > SERVICE_CONNECT_TIMEOUT){
                 Log.e(TAG, "Failed to connect to service, stopping self")
                 (serviceContext as? Service)?.stopSelf()
+                return null
             }
             Thread.sleep(10)
         }
@@ -276,7 +288,7 @@ class GoogleAppDrawerOverlayServiceHooks(
     @Synchronized
     private fun <T> runWithMediaService(
         overlayClient: BaseOverlayClient, block: (IMediaLauncherOverlay) -> T
-    ): T {
+    ): T? {
         proxyMediaService?.let {
             if(!it.ping()) return@let
             return block(it)
@@ -306,6 +318,7 @@ class GoogleAppDrawerOverlayServiceHooks(
             if(System.currentTimeMillis() - startTime > SERVICE_CONNECT_TIMEOUT){
                 Log.e(TAG, "Failed to connect to service, stopping self")
                 (serviceContext as? Service)?.stopSelf()
+                return null
             }
             Thread.sleep(10)
         }
